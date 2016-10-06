@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>《调整eclipse的内存占用》的评论</title>
+	<atom:link href="http://gonefish.info/2007/05/%e8%b0%83%e6%95%b4eclipse%e7%9a%84%e5%86%85%e5%ad%98%e5%8d%a0%e7%94%a8/feed/" rel="self" type="application/rss+xml" />
+	<link>http://gonefish.info/2007/05/%e8%b0%83%e6%95%b4eclipse%e7%9a%84%e5%86%85%e5%ad%98%e5%8d%a0%e7%94%a8/</link>
+	<description>Changing Anytime</description>
+	<lastBuildDate>Mon, 16 Dec 2013 13:28:33 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.6.1</generator>
+	<item>
+		<title>作者：admin</title>
+		<link>http://gonefish.info/2007/05/%e8%b0%83%e6%95%b4eclipse%e7%9a%84%e5%86%85%e5%ad%98%e5%8d%a0%e7%94%a8/comment-page-1/#comment-257</link>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<pubDate>Wed, 24 Nov 2010 14:19:25 +0000</pubDate>
+		<guid isPermaLink="false">http://gonefish.cn/weblog/tweak-eclipse-mem-take/#comment-257</guid>
+		<description><![CDATA[很详细，兄弟:)]]></description>
+		<content:encoded><![CDATA[<p>很详细，兄弟:)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>作者：zxc</title>
+		<link>http://gonefish.info/2007/05/%e8%b0%83%e6%95%b4eclipse%e7%9a%84%e5%86%85%e5%ad%98%e5%8d%a0%e7%94%a8/comment-page-1/#comment-221</link>
+		<dc:creator><![CDATA[zxc]]></dc:creator>
+		<pubDate>Fri, 05 Nov 2010 01:17:00 +0000</pubDate>
+		<guid isPermaLink="false">http://gonefish.cn/weblog/tweak-eclipse-mem-take/#comment-221</guid>
+		<description><![CDATA[在eclipse.ini是可以配置eclipse在启动以及运行的内存占用量。在JVM中分为堆内存和非堆内存，堆内存主要是java代码可用的内存，是供开发人员用的，非堆内存主要是JVM自己用的，包括方法的结构，JVM内部处理或优化所需的内存等。
+VM初始分配的内存由-Xms指定，默认是物理内存的1/64；JVM最大分配的内存由-Xmx指定，默认是物理内存的1/4。默认空余堆内存小于40% 时，JVM就会增大堆直到-Xmx的最大限制；空余堆内存大于70%时，JVM会减少堆直到-Xms的最小限制。因此服务器一般设置-Xms、-Xmx相等以避免在每次GC 后调整堆的大小。
+非堆内存分配
+JVM使用-XX:PermSize设置非堆内存初始值，默认是物理内存的1/64；由XX:MaxPermSize设置最大非堆内存的大小，默认是物理内存的1/4。
+JVM内存限制(最大值)]]></description>
+		<content:encoded><![CDATA[<p>在eclipse.ini是可以配置eclipse在启动以及运行的内存占用量。在JVM中分为堆内存和非堆内存，堆内存主要是java代码可用的内存，是供开发人员用的，非堆内存主要是JVM自己用的，包括方法的结构，JVM内部处理或优化所需的内存等。<br />
+VM初始分配的内存由-Xms指定，默认是物理内存的1/64；JVM最大分配的内存由-Xmx指定，默认是物理内存的1/4。默认空余堆内存小于40% 时，JVM就会增大堆直到-Xmx的最大限制；空余堆内存大于70%时，JVM会减少堆直到-Xms的最小限制。因此服务器一般设置-Xms、-Xmx相等以避免在每次GC 后调整堆的大小。<br />
+非堆内存分配<br />
+JVM使用-XX:PermSize设置非堆内存初始值，默认是物理内存的1/64；由XX:MaxPermSize设置最大非堆内存的大小，默认是物理内存的1/4。<br />
+JVM内存限制(最大值)</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>
