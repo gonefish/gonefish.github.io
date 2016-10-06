@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Django &#8211; 骨头鱼的墓</title>
+	<atom:link href="http://gonefish.info/category/django/feed/" rel="self" type="application/rss+xml" />
+	<link>http://gonefish.info</link>
+	<description>Changing Anytime</description>
+	<lastBuildDate>Sun, 27 Mar 2016 14:52:09 +0000</lastBuildDate>
+	<language>zh-CN</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.6.1</generator>
+	<item>
+		<title>django-china-area</title>
+		<link>http://gonefish.info/2013/08/django-china-aera/</link>
+		<pubDate>Fri, 02 Aug 2013 13:13:25 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[Django]]></category>
+
+		<guid isPermaLink="false">http://gonefish.info/blog/?p=1039</guid>
+		<description><![CDATA[翻出原来用Zend Framework做的一个jQuery Demo，用于选择中国区域信息，最近整理出一个Dj &#8230; <a href="http://gonefish.info/2013/08/django-china-aera/" class="more-link">继续阅读<span class="screen-reader-text">“django-china-area”</span></a>]]></description>
+				<content:encoded><![CDATA[<p>翻出原来用Zend Framework做的一个jQuery Demo，用于选择中国区域信息，最近整理出一个Django 的App的版本，地址已经放到Github上面去了</p>
+<p><a href="https://github.com/gonefish/django-china-area">https://github.com/gonefish/django-china-area</a></p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>模板语言是越傻越好</title>
+		<link>http://gonefish.info/2010/12/%e6%a8%a1%e6%9d%bf%e8%af%ad%e8%a8%80%e6%98%af%e8%b6%8a%e5%82%bb%e8%b6%8a%e5%a5%bd/</link>
+		<pubDate>Sun, 05 Dec 2010 05:26:04 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[Django]]></category>
+
+		<guid isPermaLink="false">http://gonefish.info/blog/?p=705</guid>
+		<description><![CDATA[For years I&#8217;ve been absolutely certain that I rea &#8230; <a href="http://gonefish.info/2010/12/%e6%a8%a1%e6%9d%bf%e8%af%ad%e8%a8%80%e6%98%af%e8%b6%8a%e5%82%bb%e8%b6%8a%e5%a5%bd/" class="more-link">继续阅读<span class="screen-reader-text">“模板语言是越傻越好”</span></a>]]></description>
+				<content:encoded><![CDATA[<p>For years I&#8217;ve been absolutely certain that I really prefer stupid template languages any time I&#8217;m generating HTML. The less the template language can do the better. Since I spend most of my time coding in <a href="http://python.org/">Python</a> you might assume this applies just to Python, but I think it also applies to anything where you have the power to readily mix HTML generation and code.</p>
+<p>The biggest annoyance I have with smart template languages (<a href="http://www.makotemplates.org/">Mako</a>, <a href="http://genshi.edgewall.org/">Genshi</a>, <a href="http://jinja.pocoo.org/">Jinja2</a>, <a href="http://php.org/">PHP</a>, <a href="http://www.perl.org/">Perl</a>, <a href="http://en.wikipedia.org/wiki/ColdFusion">ColdFusion</a>, etc) is that you have the capability to mix core business logic with your end views, hence violating the rules of Model-View-Controller architecture. While the web can be hard to match to MVC, in general you aren&#8217;t supposed to do that sort of thing. I&#8217;ve made the mistake of putting core logic in the wrong places in the past, but I&#8217;m proud to say I&#8217;ve gotten good at avoiding that particular mistake.</p>
+<p><strong>I don&#8217;t work in a vacuum.</strong></p>
+<p>I often work on projects crafted by others, some who decided for arcane/brilliant/idiotic reasons to mix the kernel of their applications in template function/macros. This is only possible in Smart Template Languages! If they were using a Stupid Template Language they would have been forced put their kernel code in a Python file where it applies, not in a template that was supposed to just render HTML or XML or plain text.</p>
+<p>What it comes down to is that Smart Template Languages designers assume that developers are smart enough to avoid making this mistake. Stupid Template Languages designers assume that developers generally lack the discipline to avoid creating horrific atrocities that because of unnecessary complexity have a bus factor of 1.</p>
+<p><strong>So what is a Smart Template Language?</strong></p>
+<p>In my own vernacular, template languages that let you write functions/macros are what I call a <strong>Smart Template Language</strong>. Some of them are brilliantly executed, the example of Jinja2 comes to mind, but invariably I suffer through abuse of its Macro control structure as implemented by others.</p>
+<p><strong> </strong></p>
+<p><strong>Misery Cubed a.k.a. Genius Template Languages</strong></p>
+<p>Next comes <strong>Genius Template Languages</strong>, which take things a step further. These template languages allow you to not only define functions/macros, but also let you embed unrestricted Python (or <a href="http://www.ruby-lang.org/en/">Java</a> or <a href="http://www.ruby-lang.org/en/">Ruby</a> or whatever) in the template. This &#8216;feature&#8217; lets you code your entire application in the templates!  In the Python world what comes to mind is Mako and Genshi, but I&#8217;m sure there are many other tools with this &#8216;capability&#8217;.</p>
+<p><strong>I like Stupid Template Languages!</strong></p>
+<p>Stupid Template Languages don&#8217;t let you define functions/macros. They don&#8217;t let you embed Python code. They barely let you define variables and often have simplistic control architectures.</p>
+<p>For Django efforts, which is about 70% of my work, I like the <a href="http://docs.djangoproject.com/en/dev/topics/templates/">Django Template Language</a> (DTL). Since it is used by a huge community, there are a ton of useful apps which have it as a dependency. Switching away from it would mean cutting myself off from a <a href="http://djangopackages.com/">large ecosphere of tools</a> I can use to not reinvent the wheel.</p>
+<p>Back in my <a href="http://bluebream.zope.org/">Zope</a>/<a href="http://plone.org/">Plone</a> days I really, really enjoyed the <a href="http://en.wikipedia.org/wiki/Template_Attribute_Language">Template Attribute Language</a> (TAL) because it was stupid too. If I needed an XML generation template language and could import it easily I might consider using it again, or perhaps <a href="http://chameleon.repoze.org/docs/latest/zpt.html">Chameleon</a>, which is a new, improved version . The downside is that they come paired with another tool paired with it, METAL, which gave it macros. My own experience with METAL is that it was all too easy to do what we developers do with Smart Template Languages.</p>
+<p><strong>But DTL and TAL are slow!</strong></p>
+<p>So what?</p>
+<p>If you want to boost your performance, first try caching. There are a ton of tools you can use, with <a href="http://www.varnish-cache.org/">Varnish</a> being one I keep seeing in action. Read the docs on your favorite web framework&#8217;s caching engine and apply what you learn. And Djangonauts should read up on <a href="http://www.slideshare.net/mmalone/scaling-django-1393282">Mike Malone</a> as much as possible.</p>
+<p>If after all that the site still delivers slow content and it appears to be a template language issue, then identify the bottleneck content and consider alternatives for that one portion. My favorite response is a bit of <a href="http://en.wikipedia.org/wiki/AJAX">AJAX</a>. Use your framework to render the content as <a href="http://en.wikipedia.org/wiki/JSON">JSON</a> and have <a href="http://en.wikipedia.org/wiki/JavaScript">JavaScript</a> parse it into legible content, a task which <a href="http://en.wikipedia.org/wiki/JQuery">JQuery</a> makes trivial.</p>
+<p>From: <a href="http://pydanny.blogspot.com/2010/12/stupid-template-languages.html">http://pydanny.blogspot.com/2010/12/stupid-template-languages.html</a></p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>在线谷歌地图编辑器</title>
+		<link>http://gonefish.info/2009/12/%e5%9c%a8%e7%ba%bf%e8%b0%b7%e6%ad%8c%e5%9c%b0%e5%9b%be%e7%bc%96%e8%be%91%e5%99%a8/</link>
+		<pubDate>Sun, 06 Dec 2009 13:10:36 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[Django]]></category>
+
+		<guid isPermaLink="false">http://gonefish.cn/?p=510</guid>
+		<description><![CDATA[前几天，抽时间把原来的一个Django项目移植到了Google App Engine上，在Google App &#8230; <a href="http://gonefish.info/2009/12/%e5%9c%a8%e7%ba%bf%e8%b0%b7%e6%ad%8c%e5%9c%b0%e5%9b%be%e7%bc%96%e8%be%91%e5%99%a8/" class="more-link">继续阅读<span class="screen-reader-text">“在线谷歌地图编辑器”</span></a>]]></description>
+				<content:encoded><![CDATA[<p>前几天，抽时间把原来的一个Django项目移植到了Google App Engine上，在<a href="code.google.com/appengine/">Google App Engine</a>上面使用Django还是挺方便的，主要有两个主要项目用于帮助更好的使用<a href="http://www.djangoproject.com/">Django</a>。以下是这两个项目：</p>
+<p><a href="http://code.google.com/p/google-app-engine-django">Google App Engine Helper for Django</a></p>
+<p>和</p>
+<p><a href="http://code.google.com/p/app-engine-patch/">app-engine-patch</a></p>
+<p>这两个项目的出发点不一样，但我没有使用过app-engine-patch，所以对个项目的评价是不搞谱的。Google App Engine Helper for Django引入了一个经过修改了Model基类，以使之能在Google App Engine上使用Django的model功能。</p>
+<p>总的来说Google App Engine Helper for Django这个项目能帮助你尽快的将Django项目移植到Google App Engine上去。</p>
+<p>在线谷歌地图编辑器：<a href="http://gmap2s.appspot.com">http://gmap2s.appspot.com</a></p>
+<p>用于帮助你生成在线地图的代码。</p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>用PHP实现Django的模板系统</title>
+		<link>http://gonefish.info/2009/04/%e7%94%a8php%e5%ae%9e%e7%8e%b0django%e7%9a%84%e6%a8%a1%e6%9d%bf%e7%b3%bb%e7%bb%9f/</link>
+		<comments>http://gonefish.info/2009/04/%e7%94%a8php%e5%ae%9e%e7%8e%b0django%e7%9a%84%e6%a8%a1%e6%9d%bf%e7%b3%bb%e7%bb%9f/#comments</comments>
+		<pubDate>Wed, 22 Apr 2009 12:53:28 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[Django]]></category>
+		<category><![CDATA[PHP]]></category>
+
+		<guid isPermaLink="false">http://gonefish.cn/weblog/2009-3-13-1/</guid>
+		<description><![CDATA[这几天一直没有在做lifefix的开发工作，因为突然想用PHP实现一个Django的模版系统。如果不去试一试这 &#8230; <a href="http://gonefish.info/2009/04/%e7%94%a8php%e5%ae%9e%e7%8e%b0django%e7%9a%84%e6%a8%a1%e6%9d%bf%e7%b3%bb%e7%bb%9f/" class="more-link">继续阅读<span class="screen-reader-text">“用PHP实现Django的模板系统”</span></a>]]></description>
+				<content:encoded><![CDATA[<p>这几天一直没有在做lifefix的开发工作，因为突然想用PHP实现一个Django的模版系统。如果不去试一试这个想法的话，估计我的开发工作也做不得不安宁。</p>
+<p>开始分析django模板的源代码，一边用PHP来实现，现在基本上理解了其原理，现正在一步一步的实现。啊，期待一个完整的实现。</p>
+<p>更新：现在已经移植了大部分功能，但自定义tag方面还没有完成，然后代码还有优化的余地。下周最好整理一下代码，然后发布出来。</p>
+<p>移植工作已经基本上完成了，还有些filter没移植，但是支持PHP内部函数，发布在<a href="http://bitbucket.org/gonefish/shine/">http://bitbucket.org/gonefish/shine/</a>这里。</p>
+<p>现在在准备文档。</p>
+]]></content:encoded>
+			<wfw:commentRss>http://gonefish.info/2009/04/%e7%94%a8php%e5%ae%9e%e7%8e%b0django%e7%9a%84%e6%a8%a1%e6%9d%bf%e7%b3%bb%e7%bb%9f/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+		</item>
+		<item>
+		<title>signals的存放位置</title>
+		<link>http://gonefish.info/2009/03/signals%e7%9a%84%e5%ad%98%e6%94%be%e4%bd%8d%e7%bd%ae/</link>
+		<pubDate>Thu, 05 Mar 2009 11:49:11 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[Django]]></category>
+
+		<guid isPermaLink="false">http://gonefish.cn/weblog/django-signals-code-locations/</guid>
+		<description><![CDATA[根据官方文档signals一般放在app中的management.py文件中，但我在使用svn中的版本时候，发 &#8230; <a href="http://gonefish.info/2009/03/signals%e7%9a%84%e5%ad%98%e6%94%be%e4%bd%8d%e7%bd%ae/" class="more-link">继续阅读<span class="screen-reader-text">“signals的存放位置”</span></a>]]></description>
+				<content:encoded><![CDATA[<p>根据官方文档signals一般放在app中的management.py文件中，但我在使用<a href="http://code.djangoproject.com/browser/django/trunk">svn</a>中的版本时候，发现通过view的时候尽然不会调用signals，但在命令行和测试中都可以。</p>
+<p>如果你也有这样的问题，那么把management.py中的代码放到app的__init__.py中，这样就没有问题。</p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>最新的开发版本中的session修改</title>
+		<link>http://gonefish.info/2009/03/%e6%9c%80%e6%96%b0%e7%9a%84%e5%bc%80%e5%8f%91%e7%89%88%e6%9c%ac%e4%b8%ad%e7%9a%84session%e4%bf%ae%e6%94%b9/</link>
+		<pubDate>Thu, 05 Mar 2009 11:48:35 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[Django]]></category>
+
+		<guid isPermaLink="false">http://gonefish.cn/weblog/django-remember-me/</guid>
+		<description><![CDATA[原来，想实现一个记住我的功能时，需要修改django的代码，因为session中间件对处理记录sessonid &#8230; <a href="http://gonefish.info/2009/03/%e6%9c%80%e6%96%b0%e7%9a%84%e5%bc%80%e5%8f%91%e7%89%88%e6%9c%ac%e4%b8%ad%e7%9a%84session%e4%bf%ae%e6%94%b9/" class="more-link">继续阅读<span class="screen-reader-text">“最新的开发版本中的session修改”</span></a>]]></description>
+				<content:encoded><![CDATA[<p>原来，想实现一个记住我的功能时，需要修改django的代码，因为session中间件对处理记录sessonid的cookie过期时间是写死的。在最新的开发版中，对session对象添加了几个有用的方法，set_expiry()，这个方法根据接受的参数的不同的有不同的效果。</p>
+<p>在一般情况下，站点默认使用cookie关闭浏览即取消，当使用记住我的时候，cookie则在某个时间内取消。</p>
+<p>首先，需要把SESSION_EXPIRE_AT_BROWSER_CLOSE = True</p>
+<p>然后，写个装饰器：</p>
+<p>def remember_me(view_func):<br />&nbsp;&nbsp;&nbsp; def _dec(request, *args, **kwargs):<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if request.POST.get(&#8216;rme&#8217;) == &#8216;1&#8217;:<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; request.session.set_expiry(request.session.get_expiry_age())<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return view_func(request, *args, **kwargs)<br />&nbsp;&nbsp;&nbsp; return _dec</p>
+<p>其中rme是记住我的表单项，对django.contrib.auth.views.login使用这个装饰器，呵呵这样就在不用修改login代码的情况下添加了记住我的功能。</p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>在Django中直接将用户login</title>
+		<link>http://gonefish.info/2009/03/%e5%9c%a8django%e4%b8%ad%e7%9b%b4%e6%8e%a5%e5%b0%86%e7%94%a8%e6%88%b7login/</link>
+		<pubDate>Thu, 05 Mar 2009 11:46:45 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[Django]]></category>
+
+		<guid isPermaLink="false">http://gonefish.cn/weblog/skip-authenticate-login/</guid>
+		<description><![CDATA[在设计站点的时候，也许会有这种情况：当用户注册后，直接帮当前用户登陆，这时可以使用from django.co &#8230; <a href="http://gonefish.info/2009/03/%e5%9c%a8django%e4%b8%ad%e7%9b%b4%e6%8e%a5%e5%b0%86%e7%94%a8%e6%88%b7login/" class="more-link">继续阅读<span class="screen-reader-text">“在Django中直接将用户login”</span></a>]]></description>
+				<content:encoded><![CDATA[<p>在设计站点的时候，也许会有这种情况：当用户注册后，直接帮当前用户登陆，这时可以使用from django.contrib.auth import login的方法来完成用户的状态的改变，但这里有点问题，就是在设置session的时候，会设置一个BACKEND_SESSION_KEY这个东西，如果你使用默认的login view的时候使用from django.contrib.auth import authenticate来对User对象设置一个值。如果不使用authenticate的话，那只有手工自己设置了：</p>
+<p>new_user.backend = &#8220;%s.%s&#8221; % (&#8216;django.contrib.auth.backends&#8217;, &#8216;ModelBackend&#8217;)</p>
+<p>这样就OK了</p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>Django中与Model有关的三个特性</title>
+		<link>http://gonefish.info/2009/03/django%e4%b8%ad%e4%b8%8emodel%e6%9c%89%e5%85%b3%e7%9a%84%e4%b8%89%e4%b8%aa%e7%89%b9%e6%80%a7/</link>
+		<comments>http://gonefish.info/2009/03/django%e4%b8%ad%e4%b8%8emodel%e6%9c%89%e5%85%b3%e7%9a%84%e4%b8%89%e4%b8%aa%e7%89%b9%e6%80%a7/#comments</comments>
+		<pubDate>Thu, 05 Mar 2009 11:46:21 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[Django]]></category>
+
+		<guid isPermaLink="false">http://gonefish.cn/weblog/django-in-signal-and-manager-and-model-function/</guid>
+		<description><![CDATA[使用Django也差不多有一段时间了，而且也在项目中使用了，刚开始时代码写的很烂，现在看起来非常不爽。我想说一 &#8230; <a href="http://gonefish.info/2009/03/django%e4%b8%ad%e4%b8%8emodel%e6%9c%89%e5%85%b3%e7%9a%84%e4%b8%89%e4%b8%aa%e7%89%b9%e6%80%a7/" class="more-link">继续阅读<span class="screen-reader-text">“Django中与Model有关的三个特性”</span></a>]]></description>
+				<content:encoded><![CDATA[<p>使用Django也差不多有一段时间了，而且也在项目中使用了，刚开始时代码写的很烂，现在看起来非常不爽。我想说一下关于model部分的问题，希望能给初学者一些建议吧。</p>
+<p>这里有三个关键部分：<a href="http://www.djangoproject.com/documentation/model-api/#managers" target="_blank">Manager</a>、<a href="http://www.djangoproject.com/documentation/model-api/#model-methods" target="_blank">model方法</a>、<a href="http://code.djangoproject.com/wiki/Signals" target="_blank">Signals</a>。Django是一种非常快速的开发框架，有时候文档还没看完，就能写好多东西，但如果看了文档，那么可以以更少的代码完成相同的功能。</p>
+<p>根据Manager的文档说明，Manager用于操作表级别的数据，可以用来对表中的多个项进行操作，在Manager中可以做任何事情，所以再看了Signals后，感觉功能有重叠，等下我会说明为什么重叠。当默认Manager提示的功能不能满足你的需要的时候，那么你就扩展它吧，而且model还可以有多个Manager。</p>
+<p>Model方法是行级别的方法，用于对行进行操作，比如：当ModelA是ModelB的外键时，那么可以通过ModelA的Model方法来创建ModelB。Model中的方法最封装成不需要传参数的方法，这样就可以直接在模版中调用了，这样大大减少了代码量。当然Manager也可以这样做，通过for标记遍历Querysets，然后直接调用Model中的方法。</p>
+<p>Signals这个东西是非常有用的一个机制，但这个东西还没有正式的文档。所以知名度不是很高，但还是有一个Wiki页面说明了这个东西使用。其实Signals在Django中有大量的应用，比如：在初次syncdb的使用，会让你创建超级管理员，在这里就有一个Signal，post_syncdb，当系统执行syncdb的时候，会调用已监听的方法，通过这个方法实现创建超级管理员向导。系统自带许多Signal，其中有个post_save，这个Signal用于监听Model对象保存后，执行的操作，比如：在现在中都会添加一个UserProfile来扩展User Model，但自带的添加用户方法，并不会添加UserProfile，所以可以使用post_save来监听User Model，当创建User之后，再创建UserProfile，这样不必修改Django源代码就可以使用。当然你也可以使用Manager来完成这个操作，这就是我说的重复部分，怎么用那就看自己的了。</p>
+]]></content:encoded>
+			<wfw:commentRss>http://gonefish.info/2009/03/django%e4%b8%ad%e4%b8%8emodel%e6%9c%89%e5%85%b3%e7%9a%84%e4%b8%89%e4%b8%aa%e7%89%b9%e6%80%a7/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>使用django第三方的库小提示</title>
+		<link>http://gonefish.info/2009/03/%e4%bd%bf%e7%94%a8django%e7%ac%ac%e4%b8%89%e6%96%b9%e7%9a%84%e5%ba%93%e5%b0%8f%e6%8f%90%e7%a4%ba/</link>
+		<pubDate>Thu, 05 Mar 2009 11:46:20 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[Django]]></category>
+
+		<guid isPermaLink="false">http://gonefish.cn/weblog/use-third-lib-tip-in-django/</guid>
+		<description><![CDATA[在使用Django的开发过程中，可能会经常会用其它非官方的组件。如果你使用使用它们，一般情况下必须把它们放在项 &#8230; <a href="http://gonefish.info/2009/03/%e4%bd%bf%e7%94%a8django%e7%ac%ac%e4%b8%89%e6%96%b9%e7%9a%84%e5%ba%93%e5%b0%8f%e6%8f%90%e7%a4%ba/" class="more-link">继续阅读<span class="screen-reader-text">“使用django第三方的库小提示”</span></a>]]></description>
+				<content:encoded><![CDATA[<p>在使用Django的开发过程中，可能会经常会用其它非官方的组件。如果你使用使用它们，一般情况下必须把它们放在项目的根目录下，或者是python的其它环境变量下，如果想把它们整合进项目，但又不想放在项目的根目录，那么可以在settins中加入一个环境变量，比如：</p>
+<p>&#8230;</p>
+<p>DJANGO_THIDR_COMPONENTS_PATH = &#8216;django-third&#8217;<br />sys.path.append(os.path.join(os.path.dirname(__file__), DJANGO_THIDR_COMPONENTS_PATH))</p>
+<p>&#8230;</p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>生成Django文档</title>
+		<link>http://gonefish.info/2009/03/%e7%94%9f%e6%88%90django%e6%96%87%e6%a1%a3/</link>
+		<pubDate>Thu, 05 Mar 2009 11:46:10 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[Django]]></category>
+
+		<guid isPermaLink="false">http://gonefish.cn/weblog/building-django-document/</guid>
+		<description><![CDATA[由于这几天被逼着写一些文档，顺便找了下跟Django有关的文档。后面发现在一直没注意的一个地方，就是在admi &#8230; <a href="http://gonefish.info/2009/03/%e7%94%9f%e6%88%90django%e6%96%87%e6%a1%a3/" class="more-link">继续阅读<span class="screen-reader-text">“生成Django文档”</span></a>]]></description>
+				<content:encoded><![CDATA[<p>由于这几天被逼着写一些文档，顺便找了下跟<a href="http://www.djangoproject.com/">Django</a>有关的文档。后面发现在一直没注意的一个地方，就是在admin里面有个Documentation的链接，点击进入后如果已经安装了<a href="http://docutils.sourceforge.net/">docutils</a>库，则显示一些文档，包括：Tags、Filters、Models、Views、Bookmarklets。其中在Models中，会显示定义的Field和类方法，类和类的方法都可以使用__doc__来写注释。而Field则有一个help_text参数，用于描述Field。Views的部分功能好像有点问题。</p>
+<p>一切都非常好。&nbsp;</p>
+]]></content:encoded>
+			</item>
+	</channel>
+</rss>
