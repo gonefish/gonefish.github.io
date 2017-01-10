@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://gonefish.github.io/"/>
-  <updated>2016-10-01T10:41:49.000Z</updated>
+  <updated>2017-01-10T14:21:08.000Z</updated>
   <id>http://gonefish.github.io/</id>
   
   <author>
@@ -14,6 +14,77 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>CocoaPods进阶使用：共享Pods.xcodeproj给其它的Project</title>
+    <link href="http://gonefish.github.io/2017/01/07/Shared-CocoaPods-Project/"/>
+    <id>http://gonefish.github.io/2017/01/07/Shared-CocoaPods-Project/</id>
+    <published>2017-01-06T16:00:00.000Z</published>
+    <updated>2017-01-10T14:21:08.000Z</updated>
+    
+    <content type="html">&lt;p&gt;CocoaPods是iOS平台上流行的第三方包管理工具。基本的介绍及使用方法可参考&lt;a href=&quot;http://blog.devtang.com/2014/05/25/use-cocoapod-to-manage-ios-lib-dependency/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;《唐巧的博客——用CocoaPods做iOS程序的依赖管理》&lt;/a&gt;，这里就不做介绍了。&lt;/p&gt;
+&lt;p&gt;在CocoaPods的使用过程中，会根据Podfile的内容，来抓取第三方库的源文件和生成其它相关的文件。这些文件均存放在Pods目录中，并通过生成的Pods.xcodeproj项目来进行管理。除此之外，还有几个关键的文件位于目录：Pods/Target Support Files/Pods-XXX/ 中，下面会讲到如何使用它们来解决我们标题中的问题。&lt;/p&gt;
+&lt;h2 id=&quot;问题：什么情况下需要共享Pods-xcodeproj-？&quot;&gt;&lt;a href=&quot;#问题：什么情况下需要共享Pods-xcodeproj-？&quot; class=&quot;headerlink&quot; title=&quot;问题：什么情况下需要共享Pods.xcodeproj ？&quot;&gt;&lt;/a&gt;问题：什么情况下需要共享Pods.xcodeproj ？&lt;/h2&gt;&lt;p&gt;有很多iOS App会同时开发iPhone和iPad两个独立客户端，而不是开发单独的Universal客户端。这时候通常有两个.xcodeproj工程，虽然单个工程通过两个Target也能达到类似的效果，但这里不考虑这种情况。如果两个.xcodeproj工程可以共享Pods.xcodeproj，那么维护Pods会是非常的方便。&lt;/p&gt;
+&lt;h2 id=&quot;示例：共享Pods-xcodeproj给其它的Project&quot;&gt;&lt;a href=&quot;#示例：共享Pods-xcodeproj给其它的Project&quot; class=&quot;headerlink&quot; title=&quot;示例：共享Pods.xcodeproj给其它的Project&quot;&gt;&lt;/a&gt;示例：共享Pods.xcodeproj给其它的Project&lt;/h2&gt;&lt;p&gt;让我们开始，看看如何通过一些设置来满足这个需求。&lt;/p&gt;
+&lt;h3 id=&quot;准备&quot;&gt;&lt;a href=&quot;#准备&quot; class=&quot;headerlink&quot; title=&quot;准备&quot;&gt;&lt;/a&gt;准备&lt;/h3&gt;&lt;p&gt;我们创建SharePodsDeme目录来放置我们的工程文件，包括：Phone和Pad项目文件。&lt;/p&gt;
+&lt;h3 id=&quot;创建SharePodsDemoPhone工程&quot;&gt;&lt;a href=&quot;#创建SharePodsDemoPhone工程&quot; class=&quot;headerlink&quot; title=&quot;创建SharePodsDemoPhone工程&quot;&gt;&lt;/a&gt;创建SharePodsDemoPhone工程&lt;/h3&gt;&lt;p&gt;我们创建一个空的示例项目SharePodsDemoPhone，放置在SharePodsDeme目录里，注意文件的层级关系如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;SharePodsDeme/
+SharePodsDeme/SharePodsDemoPhone.xcodeproj
+SharePodsDeme/SharePodsDemoPhone/
+SharePodsDeme/SharePodsDemoPhone/*
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在SharePodsDeme目录下创建Podfile，内容如下：&lt;/p&gt;
+&lt;figure class=&quot;highlight ruby&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;platform &lt;span class=&quot;symbol&quot;&gt;:ios&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&#39;8.0&#39;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;#use_frameworks!&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;target &lt;span class=&quot;string&quot;&gt;&#39;SharePodsDemoPhone&#39;&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;do&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  pod &lt;span class=&quot;string&quot;&gt;&#39;AFNetworking&#39;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;执行pod install后，会生成SharePodsDemoPhone.xcworkspace，打开SharePodsDemoPhone.xcworkspace后，如下图：&lt;/p&gt;
+&lt;img src=&quot;/2017/01/07/Shared-CocoaPods-Project/pic1.png&quot; alt=&quot;pic1.png&quot; title=&quot;&quot;&gt;
+&lt;h3 id=&quot;创建SharePodsDemoPad工程&quot;&gt;&lt;a href=&quot;#创建SharePodsDemoPad工程&quot; class=&quot;headerlink&quot; title=&quot;创建SharePodsDemoPad工程&quot;&gt;&lt;/a&gt;创建SharePodsDemoPad工程&lt;/h3&gt;&lt;p&gt;用同样的方式在SharePodsDeme目录下创建SharePodsDemoPad工程，此时的目录结构见下图&lt;/p&gt;
+&lt;img src=&quot;/2017/01/07/Shared-CocoaPods-Project/pic2.png&quot; alt=&quot;pic2.png&quot; title=&quot;&quot;&gt;
+&lt;h3 id=&quot;拖入SharePodsDemoPad工程到SharePodsDemo工作区&quot;&gt;&lt;a href=&quot;#拖入SharePodsDemoPad工程到SharePodsDemo工作区&quot; class=&quot;headerlink&quot; title=&quot;拖入SharePodsDemoPad工程到SharePodsDemo工作区&quot;&gt;&lt;/a&gt;拖入SharePodsDemoPad工程到SharePodsDemo工作区&lt;/h3&gt;&lt;p&gt;将SharePodsDemoPhone.xcworkspace重命名为SharePodsDemo.xcworkspace后打开。将SharePodsDemoPad.xcodeproj拖入SharePodsDemo.xcworkspace中，注意：需要拖放到最顶层。&lt;/p&gt;
+&lt;img src=&quot;/2017/01/07/Shared-CocoaPods-Project/pic3.png&quot; alt=&quot;pic3.png&quot; title=&quot;&quot;&gt;
+&lt;p&gt;现在就可以在SharePodsDemo工作区中同时管理SharePodsDemoPhone和SharePodsDemoPad这两个项目了，不过此时SharePodsDemoPad项目中还不能引入Pods中的文件的。&lt;/p&gt;
+&lt;img src=&quot;/2017/01/07/Shared-CocoaPods-Project/pic4.png&quot; alt=&quot;pic4.png&quot; title=&quot;&quot;&gt;
+&lt;h3 id=&quot;复制xcconfig&quot;&gt;&lt;a href=&quot;#复制xcconfig&quot; class=&quot;headerlink&quot; title=&quot;复制xcconfig&quot;&gt;&lt;/a&gt;复制xcconfig&lt;/h3&gt;&lt;p&gt;在SharePodsDemoPad项目中创建Pods的Group，然后在Pods/Target Support Files/Pods-SharePodsDemoPhone/目录下找到Pods-SharePodsDemoPhone.debug.xcconfig和Pods-SharePodsDemoPhone.release.xcconfig这两个文件，并插入到新建的Pods Group中&lt;/p&gt;
+&lt;img src=&quot;/2017/01/07/Shared-CocoaPods-Project/pic5.png&quot; alt=&quot;pic5.png&quot; title=&quot;&quot;&gt;
+&lt;p&gt;注意：不要勾选Copy items if needed&lt;/p&gt;
+&lt;h3 id=&quot;设置Configureations&quot;&gt;&lt;a href=&quot;#设置Configureations&quot; class=&quot;headerlink&quot; title=&quot;设置Configureations&quot;&gt;&lt;/a&gt;设置Configureations&lt;/h3&gt;&lt;p&gt;修改SharePodsDemoPad的项目Configureations设置，添加对应的配置文件，如下图&lt;/p&gt;
+&lt;img src=&quot;/2017/01/07/Shared-CocoaPods-Project/pic6.png&quot; alt=&quot;pic6.png&quot; title=&quot;&quot;&gt;
+&lt;h3 id=&quot;添加Build-Phases&quot;&gt;&lt;a href=&quot;#添加Build-Phases&quot; class=&quot;headerlink&quot; title=&quot;添加Build Phases&quot;&gt;&lt;/a&gt;添加Build Phases&lt;/h3&gt;&lt;p&gt;在Link Binary With Libraries中添加libPods-SharePodsDemoPhone.a&lt;/p&gt;
+&lt;img src=&quot;/2017/01/07/Shared-CocoaPods-Project/pic7.png&quot; alt=&quot;pic7.png&quot; title=&quot;&quot;&gt;
+&lt;p&gt;这个时候再试试编译SharePodsDemoPad，应该可以编译成功了。&lt;/p&gt;
+&lt;p&gt;为了让CocoaPods能够正常工作，还有几个Build Phases需要添加到SharePodsDemoPad中。这些Build Phases的名字都是以[CP]开头，具体的内容直接从SharePodsDemoPhone复制过来即可。&lt;/p&gt;
+&lt;img src=&quot;/2017/01/07/Shared-CocoaPods-Project/pic8.png&quot; alt=&quot;pic8.png&quot; title=&quot;&quot;&gt;
+&lt;p&gt;这样所有的设置就完成了，以后可以方便的共享Pods中的内容了。上面的这个流程其实就是CocoaPods命令中所执行的部分内容。希望这篇文章能够让你对CocoaPods有进一步了了解。&lt;/p&gt;
+&lt;p&gt;最终的项目文件：&lt;a href=&quot;/2017/01/07/Shared-CocoaPods-Project/SharePodsDeme.zip&quot; title=&quot;SharePodsDeme.zip&quot;&gt;SharePodsDeme.zip&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;最后&quot;&gt;&lt;a href=&quot;#最后&quot; class=&quot;headerlink&quot; title=&quot;最后&quot;&gt;&lt;/a&gt;最后&lt;/h2&gt;&lt;p&gt;其实你不需要手动完成上面的步骤，试着把Podfile改成下面的样式，然后pod install结果是一样的：）&lt;/p&gt;
+&lt;figure class=&quot;highlight ruby&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;platform &lt;span class=&quot;symbol&quot;&gt;:ios&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&#39;8.0&#39;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;#use_frameworks!&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;target &lt;span class=&quot;string&quot;&gt;&#39;SharePodsDemoPhone&#39;&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;do&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  workspace &lt;span class=&quot;string&quot;&gt;&#39;SharePodsDemo&#39;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  project &lt;span class=&quot;string&quot;&gt;&#39;SharePodsDemoPhone&#39;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  pod &lt;span class=&quot;string&quot;&gt;&#39;AFNetworking&#39;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;target &lt;span class=&quot;string&quot;&gt;&#39;SharePodsDemoPad&#39;&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;do&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  workspace &lt;span class=&quot;string&quot;&gt;&#39;SharePodsDemo&#39;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  project &lt;span class=&quot;string&quot;&gt;&#39;SharePodsDemoPad&#39;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  pod &lt;span class=&quot;string&quot;&gt;&#39;AFNetworking&#39;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h2 id=&quot;其它&quot;&gt;&lt;a href=&quot;#其它&quot; class=&quot;headerlink&quot; title=&quot;其它&quot;&gt;&lt;/a&gt;其它&lt;/h2&gt;&lt;h3 id=&quot;替换RubyGems源&quot;&gt;&lt;a href=&quot;#替换RubyGems源&quot; class=&quot;headerlink&quot; title=&quot;替换RubyGems源&quot;&gt;&lt;/a&gt;替换RubyGems源&lt;/h3&gt;&lt;p&gt;由于河蟹的原因RubyGems无法正常访问，之前Taobao维护的镜像现在已经不再维护了，所以需要切换到Ruby China提供的镜像。&lt;/p&gt;
+&lt;p&gt;请尽可能用比较新的 RubyGems 版本，建议 2.6.x 以上。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ gem update --system # 这里请翻墙一下
+
+$ gem -v
+2.6.3
+
+$ gem sources --add https://gems.ruby-china.org/ --remove https://rubygems.org/
+
+$ gem sources -l
+https://gems.ruby-china.org
+# 确保只有 gems.ruby-china.org
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;查看详情或其它问题请访问 &lt;a href=&quot;https://gems.ruby-china.org&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://gems.ruby-china.org&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;Pods目录是否要放入版本管理系统中？&quot;&gt;&lt;a href=&quot;#Pods目录是否要放入版本管理系统中？&quot; class=&quot;headerlink&quot; title=&quot;Pods目录是否要放入版本管理系统中？&quot;&gt;&lt;/a&gt;Pods目录是否要放入版本管理系统中？&lt;/h3&gt;&lt;p&gt;我的建议是把Pods目录也纳入版本管理系统之中，当然Podfile和Podfile.lock是必须放入版本管理系统中的。在团队开发过程中，确保开发环境的一致性非常重要。Pods目录中生成的文件会随着执行不同的命令而产生不同的变化，比如：不同CocoaPods版本；执行pod install或者pod update命令。另外，也保证了代码的完整性，在获取到最新的代码后，就可以开始编译项目了。&lt;/p&gt;
+&lt;p&gt;这样做主要的缺点是纳入版本管理系统的文件会更多，这个应该不是什么大问题。大的二进制文件可以使用&lt;a href=&quot;https://git-lfs.github.com&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;LFS&lt;/a&gt;来管理。&lt;/p&gt;
+&lt;h3 id=&quot;CocoaPods进阶资料&quot;&gt;&lt;a href=&quot;#CocoaPods进阶资料&quot; class=&quot;headerlink&quot; title=&quot;CocoaPods进阶资料&quot;&gt;&lt;/a&gt;CocoaPods进阶资料&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://objccn.io/issue-6-4/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;深入理解 CocoaPods&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://draveness.me/cocoapods/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;CocoaPods 都做了什么？&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;CocoaPods是iOS平台上流行的第三方包管理工具。基本的介绍及使用方法可参考&lt;a href=&quot;http://blog.devtang.com/2014/05/25/use-cocoapod-to-manage-ios-lib-dependency/&quot; target=&quot;
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>《把时间当作朋友》读书小记</title>
