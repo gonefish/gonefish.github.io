@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://gonefish.github.io/"/>
-  <updated>2017-01-10T14:21:08.000Z</updated>
+  <updated>2017-01-11T13:20:39.000Z</updated>
   <id>http://gonefish.github.io/</id>
   
   <author>
@@ -20,11 +20,12 @@
     <link href="http://gonefish.github.io/2017/01/07/Shared-CocoaPods-Project/"/>
     <id>http://gonefish.github.io/2017/01/07/Shared-CocoaPods-Project/</id>
     <published>2017-01-06T16:00:00.000Z</published>
-    <updated>2017-01-10T14:21:08.000Z</updated>
+    <updated>2017-01-11T13:20:39.000Z</updated>
     
     <content type="html">&lt;p&gt;CocoaPods是iOS平台上流行的第三方包管理工具。基本的介绍及使用方法可参考&lt;a href=&quot;http://blog.devtang.com/2014/05/25/use-cocoapod-to-manage-ios-lib-dependency/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;《唐巧的博客——用CocoaPods做iOS程序的依赖管理》&lt;/a&gt;，这里就不做介绍了。&lt;/p&gt;
 &lt;p&gt;在CocoaPods的使用过程中，会根据Podfile的内容，来抓取第三方库的源文件和生成其它相关的文件。这些文件均存放在Pods目录中，并通过生成的Pods.xcodeproj项目来进行管理。除此之外，还有几个关键的文件位于目录：Pods/Target Support Files/Pods-XXX/ 中，下面会讲到如何使用它们来解决我们标题中的问题。&lt;/p&gt;
 &lt;h2 id=&quot;问题：什么情况下需要共享Pods-xcodeproj-？&quot;&gt;&lt;a href=&quot;#问题：什么情况下需要共享Pods-xcodeproj-？&quot; class=&quot;headerlink&quot; title=&quot;问题：什么情况下需要共享Pods.xcodeproj ？&quot;&gt;&lt;/a&gt;问题：什么情况下需要共享Pods.xcodeproj ？&lt;/h2&gt;&lt;p&gt;有很多iOS App会同时开发iPhone和iPad两个独立客户端，而不是开发单独的Universal客户端。这时候通常有两个.xcodeproj工程，虽然单个工程通过两个Target也能达到类似的效果，但这里不考虑这种情况。如果两个.xcodeproj工程可以共享Pods.xcodeproj，那么维护Pods会是非常的方便。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
 &lt;h2 id=&quot;示例：共享Pods-xcodeproj给其它的Project&quot;&gt;&lt;a href=&quot;#示例：共享Pods-xcodeproj给其它的Project&quot; class=&quot;headerlink&quot; title=&quot;示例：共享Pods.xcodeproj给其它的Project&quot;&gt;&lt;/a&gt;示例：共享Pods.xcodeproj给其它的Project&lt;/h2&gt;&lt;p&gt;让我们开始，看看如何通过一些设置来满足这个需求。&lt;/p&gt;
 &lt;h3 id=&quot;准备&quot;&gt;&lt;a href=&quot;#准备&quot; class=&quot;headerlink&quot; title=&quot;准备&quot;&gt;&lt;/a&gt;准备&lt;/h3&gt;&lt;p&gt;我们创建SharePodsDeme目录来放置我们的工程文件，包括：Phone和Pad项目文件。&lt;/p&gt;
 &lt;h3 id=&quot;创建SharePodsDemoPhone工程&quot;&gt;&lt;a href=&quot;#创建SharePodsDemoPhone工程&quot; class=&quot;headerlink&quot; title=&quot;创建SharePodsDemoPhone工程&quot;&gt;&lt;/a&gt;创建SharePodsDemoPhone工程&lt;/h3&gt;&lt;p&gt;我们创建一个空的示例项目SharePodsDemoPhone，放置在SharePodsDeme目录里，注意文件的层级关系如下：&lt;/p&gt;
@@ -79,7 +80,36 @@ https://gems.ruby-china.org
     
     <summary type="html">
     
-      &lt;p&gt;CocoaPods是iOS平台上流行的第三方包管理工具。基本的介绍及使用方法可参考&lt;a href=&quot;http://blog.devtang.com/2014/05/25/use-cocoapod-to-manage-ios-lib-dependency/&quot; target=&quot;
+      &lt;p&gt;CocoaPods是iOS平台上流行的第三方包管理工具。基本的介绍及使用方法可参考&lt;a href=&quot;http://blog.devtang.com/2014/05/25/use-cocoapod-to-manage-ios-lib-dependency/&quot;&gt;《唐巧的博客——用CocoaPods做iOS程序的依赖管理》&lt;/a&gt;，这里就不做介绍了。&lt;/p&gt;
+&lt;p&gt;在CocoaPods的使用过程中，会根据Podfile的内容，来抓取第三方库的源文件和生成其它相关的文件。这些文件均存放在Pods目录中，并通过生成的Pods.xcodeproj项目来进行管理。除此之外，还有几个关键的文件位于目录：Pods/Target Support Files/Pods-XXX/ 中，下面会讲到如何使用它们来解决我们标题中的问题。&lt;/p&gt;
+&lt;h2 id=&quot;问题：什么情况下需要共享Pods-xcodeproj-？&quot;&gt;&lt;a href=&quot;#问题：什么情况下需要共享Pods-xcodeproj-？&quot; class=&quot;headerlink&quot; title=&quot;问题：什么情况下需要共享Pods.xcodeproj ？&quot;&gt;&lt;/a&gt;问题：什么情况下需要共享Pods.xcodeproj ？&lt;/h2&gt;&lt;p&gt;有很多iOS App会同时开发iPhone和iPad两个独立客户端，而不是开发单独的Universal客户端。这时候通常有两个.xcodeproj工程，虽然单个工程通过两个Target也能达到类似的效果，但这里不考虑这种情况。如果两个.xcodeproj工程可以共享Pods.xcodeproj，那么维护Pods会是非常的方便。&lt;/p&gt;
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>2016年个人总结</title>
+    <link href="http://gonefish.github.io/2016/12/31/2016-Review/"/>
+    <id>http://gonefish.github.io/2016/12/31/2016-Review/</id>
+    <published>2016-12-31T15:28:21.000Z</published>
+    <updated>2017-01-28T10:07:26.000Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;学习&quot;&gt;&lt;a href=&quot;#学习&quot; class=&quot;headerlink&quot; title=&quot;学习&quot;&gt;&lt;/a&gt;学习&lt;/h2&gt;&lt;p&gt;在整个2015年里，自己花在读书上的时间很少，这个问题也一直持续到2016年上半年。在结束这1年的高强度工作后，终于有时间可以多看看书了。今年在还买了Kindle后，明显的提高了我看书的效率，可以有更多的碎片时间拿来利用。&lt;/p&gt;
+&lt;p&gt;2016年我的书单：《成为技术领导者》、《从优秀到卓越》、《人性的弱点》、《把时间当作朋友》、《人类简史：从动物到上帝》、《尼采：在世纪的转折点上》、《必然》、《引爆点》、《重新定义公司:谷歌是如何运营的》。&lt;/p&gt;
+&lt;p&gt;年度最喜欢的书非《人类简史：从动物到上帝》莫属了，其实《把时间当作朋友》我也非常喜欢。&lt;/p&gt;
+&lt;p&gt;除了看书，今年还报名了《混沌研习社》，成为付费会员，听了很多不同内容的分享。算是我在网上付费最大一笔的学习支出了，个人觉得还是非常值得的。&lt;/p&gt;
+&lt;h2 id=&quot;职业&quot;&gt;&lt;a href=&quot;#职业&quot; class=&quot;headerlink&quot; title=&quot;职业&quot;&gt;&lt;/a&gt;职业&lt;/h2&gt;&lt;p&gt;在今年里，终于结束了1年在创业公司的工作。这段的经历给我深深的上了一课，“传统企业玩互联网是找死，不转是等死”，这话说的真没错，传统企业是做不好互联网的。这次的失败让我对不靠谱的公司有了更一步的理解。&lt;/p&gt;
+&lt;p&gt;这一整年里，自己的职业发展没有任何进步，这给了我非常大的紧迫感，我需要再次变革。&lt;/p&gt;
+&lt;h2 id=&quot;生活&quot;&gt;&lt;a href=&quot;#生活&quot; class=&quot;headerlink&quot; title=&quot;生活&quot;&gt;&lt;/a&gt;生活&lt;/h2&gt;&lt;p&gt;2016年里上海房价疯狂上涨，幅度前所未闻，不少地方都直接翻翻了，让我非常的郁闷。为什么一个国家可以让这样不公平的事情一直发生？虽然，我大兲朝本来就是这样。&lt;/p&gt;
+&lt;p&gt;2016年将要过去了，我们又多相处了一年，也见了我们的父母，终于快要修成正果了，这算是我2016里最大的收获。&lt;/p&gt;
+&lt;h2 id=&quot;2017&quot;&gt;&lt;a href=&quot;#2017&quot; class=&quot;headerlink&quot; title=&quot;2017&quot;&gt;&lt;/a&gt;2017&lt;/h2&gt;&lt;p&gt;2017年必然是我人生最重要的一个阶段，我必须投入更大的努力来证明我可以的。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;学习&quot;&gt;&lt;a href=&quot;#学习&quot; class=&quot;headerlink&quot; title=&quot;学习&quot;&gt;&lt;/a&gt;学习&lt;/h2&gt;&lt;p&gt;在整个2015年里，自己花在读书上的时间很少，这个问题也一直持续到2016年上半年。在结束这1年的高强度工作后，终于有时间可以多看看书了。今
     
     </summary>
     
@@ -91,13 +121,14 @@ https://gems.ruby-china.org
     <link href="http://gonefish.github.io/2016/09/16/%E6%8A%8A%E6%97%B6%E9%97%B4%E5%BD%93%E4%BD%9C%E6%9C%8B%E5%8F%8B/"/>
     <id>http://gonefish.github.io/2016/09/16/把时间当作朋友/</id>
     <published>2016-09-16T06:49:56.000Z</published>
-    <updated>2016-10-01T10:41:49.000Z</updated>
+    <updated>2017-01-11T13:21:14.000Z</updated>
     
     <content type="html">&lt;p&gt;最近这段时间发现自己对GTD的实践有所懈怠，所以想重读&lt;a href=&quot;https://book.douban.com/subject/4849382/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;《尽管去做——无压工作的艺术》&lt;/a&gt;，后来改变主意还是想找另外一本讲GTD的书，结果找到了这一本&lt;a href=&quot;https://www.amazon.cn/把时间当作朋友-李笑来/dp/B00FU3CRZI/ref=sr_1_1?ie=UTF8&amp;amp;qid=1474331436&amp;amp;sr=8-1&amp;amp;keywords=把时间当作朋友&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;《把时间当朋友》&lt;/a&gt;。由于之前在KnewOne上买过东西，立即对这本书有了好感。虽然4月份就买了，但一直到7月才开始阅读，然后一发不可收拾，这本书的名字太低调了。让我想起了电影&lt;a href=&quot;https://movie.douban.com/subject/3793023/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;《三傻大闹宝莱坞》&lt;/a&gt;，虽然名字很平常，但所展现的内容却是非同一般。&lt;/p&gt;
 &lt;p&gt;在书里从心理学、科学、哲学多个的角度来描述开启心智的重要性。这个重要性足以影响每个人的生活、工作、思想的方方面面。&lt;/p&gt;
 &lt;p&gt;通过各种日常生活中的例子，更深入一下展现这些例子背后的问题，而这些问题通常是我们不想去想、不敢去想或者根本就没有想过的。特别是一些很现实的问题，比如：绝大多数人都不“成功”。那所谓的“成功”究竟是什么意思呢？是这个社会定义的“成功”？还是你自己定义的“成功”？还是你所追求的只是别人的成功？&lt;/p&gt;
 &lt;p&gt;有意思的是，这个问题的答案，在我最近读的一本书&lt;a href=&quot;https://www.amazon.cn/Yuval-Noah-Harari/dp/B00T95D35G/ref=tmm_kin_swatch_0?_encoding=UTF8&amp;amp;qid=1474331397&amp;amp;sr=8-1&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;《人类简史》&lt;/a&gt;里，可以找到一些线索。而且这本书里谈到了“自知”的问题，里面有句话：“平庸的人也有权利快乐”。&lt;/p&gt;
 &lt;p&gt;这本书里的内容是不能从别人那里理解的，开启心智只能是自己的事。附上摘抄的笔记：&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
 &lt;h2 id=&quot;第0章-困境&quot;&gt;&lt;a href=&quot;#第0章-困境&quot; class=&quot;headerlink&quot; title=&quot;第0章 困境&quot;&gt;&lt;/a&gt;第0章 困境&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;1 问题
     任务都有一个最后期限
     不管是否已经开始执行，最后期限都在不断迫近，因为时间永不停歇
@@ -553,7 +584,11 @@ https://gems.ruby-china.org
     
     <summary type="html">
     
-      &lt;p&gt;最近这段时间发现自己对GTD的实践有所懈怠，所以想重读&lt;a href=&quot;https://book.douban.com/subject/4849382/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;《尽管去做——无压工作的艺术》&lt;/a&gt;，后来改变主意还是
+      &lt;p&gt;最近这段时间发现自己对GTD的实践有所懈怠，所以想重读&lt;a href=&quot;https://book.douban.com/subject/4849382/&quot;&gt;《尽管去做——无压工作的艺术》&lt;/a&gt;，后来改变主意还是想找另外一本讲GTD的书，结果找到了这一本&lt;a href=&quot;https://www.amazon.cn/把时间当作朋友-李笑来/dp/B00FU3CRZI/ref=sr_1_1?ie=UTF8&amp;amp;qid=1474331436&amp;amp;sr=8-1&amp;amp;keywords=把时间当作朋友&quot;&gt;《把时间当朋友》&lt;/a&gt;。由于之前在KnewOne上买过东西，立即对这本书有了好感。虽然4月份就买了，但一直到7月才开始阅读，然后一发不可收拾，这本书的名字太低调了。让我想起了电影&lt;a href=&quot;https://movie.douban.com/subject/3793023/&quot;&gt;《三傻大闹宝莱坞》&lt;/a&gt;，虽然名字很平常，但所展现的内容却是非同一般。&lt;/p&gt;
+&lt;p&gt;在书里从心理学、科学、哲学多个的角度来描述开启心智的重要性。这个重要性足以影响每个人的生活、工作、思想的方方面面。&lt;/p&gt;
+&lt;p&gt;通过各种日常生活中的例子，更深入一下展现这些例子背后的问题，而这些问题通常是我们不想去想、不敢去想或者根本就没有想过的。特别是一些很现实的问题，比如：绝大多数人都不“成功”。那所谓的“成功”究竟是什么意思呢？是这个社会定义的“成功”？还是你自己定义的“成功”？还是你所追求的只是别人的成功？&lt;/p&gt;
+&lt;p&gt;有意思的是，这个问题的答案，在我最近读的一本书&lt;a href=&quot;https://www.amazon.cn/Yuval-Noah-Harari/dp/B00T95D35G/ref=tmm_kin_swatch_0?_encoding=UTF8&amp;amp;qid=1474331397&amp;amp;sr=8-1&quot;&gt;《人类简史》&lt;/a&gt;里，可以找到一些线索。而且这本书里谈到了“自知”的问题，里面有句话：“平庸的人也有权利快乐”。&lt;/p&gt;
+&lt;p&gt;这本书里的内容是不能从别人那里理解的，开启心智只能是自己的事。附上摘抄的笔记：&lt;/p&gt;
     
     </summary>
     
@@ -567,7 +602,7 @@ https://gems.ruby-china.org
     <link href="http://gonefish.github.io/2016/06/01/Good-To-Great-Review/"/>
     <id>http://gonefish.github.io/2016/06/01/Good-To-Great-Review/</id>
     <published>2016-06-01T06:43:37.000Z</published>
-    <updated>2016-10-01T10:44:34.000Z</updated>
+    <updated>2017-01-11T13:21:25.000Z</updated>
     
     <content type="html">&lt;p&gt;无论你是在上班还是在创业，这本书都能帮助你预测公司的未来。书中提到的“3个训练有素”非常具有指导意义：&lt;/p&gt;
 &lt;ol&gt;
@@ -576,6 +611,7 @@ https://gems.ruby-china.org
 &lt;li&gt;训练有素的行为&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;更新笔记整理 2016.10.1&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
 &lt;h2 id=&quot;第二章-第5级经理人&quot;&gt;&lt;a href=&quot;#第二章-第5级经理人&quot; class=&quot;headerlink&quot; title=&quot;第二章 第5级经理人&quot;&gt;&lt;/a&gt;第二章 第5级经理人&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;公司利益优先于个人利益
 
  谦逊+意志=第5级经理人
@@ -943,7 +979,7 @@ https://gems.ruby-china.org
 &lt;li&gt;训练有素的思想&lt;/li&gt;
 &lt;li&gt;训练有素的行为&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;更新笔记整理 2016.10.1&lt;
+&lt;p&gt;更新笔记整理 2016.10.1&lt;/p&gt;
     
     </summary>
     

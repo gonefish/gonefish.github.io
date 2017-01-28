@@ -73,6 +73,8 @@
 
 
 
+  
+
 
   <link rel="alternate" href="/atom.xml" title="骨头鱼的墓" type="application/atom+xml" />
 
@@ -102,7 +104,7 @@
 <meta property="og:image" content="http://gonefish.github.io/2017/01/07/Shared-CocoaPods-Project/pic6.png">
 <meta property="og:image" content="http://gonefish.github.io/2017/01/07/Shared-CocoaPods-Project/pic7.png">
 <meta property="og:image" content="http://gonefish.github.io/2017/01/07/Shared-CocoaPods-Project/pic8.png">
-<meta property="og:updated_time" content="2017-01-10T14:21:08.000Z">
+<meta property="og:updated_time" content="2017-01-11T13:20:39.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CocoaPods进阶使用：共享Pods.xcodeproj给其它的Project">
 <meta name="twitter:description" content="CocoaPods是iOS平台上流行的第三方包管理工具。基本的介绍及使用方法可参考《唐巧的博客——用CocoaPods做iOS程序的依赖管理》，这里就不做介绍了。
@@ -315,6 +317,7 @@
         <p>CocoaPods是iOS平台上流行的第三方包管理工具。基本的介绍及使用方法可参考<a href="http://blog.devtang.com/2014/05/25/use-cocoapod-to-manage-ios-lib-dependency/" target="_blank" rel="external">《唐巧的博客——用CocoaPods做iOS程序的依赖管理》</a>，这里就不做介绍了。</p>
 <p>在CocoaPods的使用过程中，会根据Podfile的内容，来抓取第三方库的源文件和生成其它相关的文件。这些文件均存放在Pods目录中，并通过生成的Pods.xcodeproj项目来进行管理。除此之外，还有几个关键的文件位于目录：Pods/Target Support Files/Pods-XXX/ 中，下面会讲到如何使用它们来解决我们标题中的问题。</p>
 <h2 id="问题：什么情况下需要共享Pods-xcodeproj-？"><a href="#问题：什么情况下需要共享Pods-xcodeproj-？" class="headerlink" title="问题：什么情况下需要共享Pods.xcodeproj ？"></a>问题：什么情况下需要共享Pods.xcodeproj ？</h2><p>有很多iOS App会同时开发iPhone和iPad两个独立客户端，而不是开发单独的Universal客户端。这时候通常有两个.xcodeproj工程，虽然单个工程通过两个Target也能达到类似的效果，但这里不考虑这种情况。如果两个.xcodeproj工程可以共享Pods.xcodeproj，那么维护Pods会是非常的方便。</p>
+<a id="more"></a>
 <h2 id="示例：共享Pods-xcodeproj给其它的Project"><a href="#示例：共享Pods-xcodeproj给其它的Project" class="headerlink" title="示例：共享Pods.xcodeproj给其它的Project"></a>示例：共享Pods.xcodeproj给其它的Project</h2><p>让我们开始，看看如何通过一些设置来满足这个需求。</p>
 <h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><p>我们创建SharePodsDeme目录来放置我们的工程文件，包括：Phone和Pad项目文件。</p>
 <h3 id="创建SharePodsDemoPhone工程"><a href="#创建SharePodsDemoPhone工程" class="headerlink" title="创建SharePodsDemoPhone工程"></a>创建SharePodsDemoPhone工程</h3><p>我们创建一个空的示例项目SharePodsDemoPhone，放置在SharePodsDeme目录里，注意文件的层级关系如下：</p>
@@ -389,8 +392,8 @@ https://gems.ruby-china.org
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/09/16/把时间当作朋友/" rel="next" title="《把时间当作朋友》读书小记">
-                <i class="fa fa-chevron-left"></i> 《把时间当作朋友》读书小记
+              <a href="/2016/12/31/2016-Review/" rel="next" title="2016年个人总结">
+                <i class="fa fa-chevron-left"></i> 2016年个人总结
               </a>
             
           </div>
@@ -490,7 +493,7 @@ https://gems.ruby-china.org
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-count">4</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
