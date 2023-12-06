@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"gonefish.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="CocoaPods是iOS平台上流行的第三方包管理工具。基本的介绍及使用方法可参考《唐巧的博客——用CocoaPods做iOS程序的依赖管理》，这里就不做介绍了。 在CocoaPods的使用过程中，会根据Podfile的内容，来抓取第三方库的源文件和生成其它相关的文件。这些文件均存放在Pods目录中，并通过生成的Pods.xcodeproj项目来进行管理。除此之外，还有几个关键的文件位于目录：Po">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CocoaPods进阶使用：共享Pods.xcodeproj给其它的Project">
+<meta property="og:url" content="http://gonefish.github.io/2017/01/07/Shared-CocoaPods-Project/index.html">
+<meta property="og:site_name" content="酱酱不惊">
+<meta property="og:description" content="CocoaPods是iOS平台上流行的第三方包管理工具。基本的介绍及使用方法可参考《唐巧的博客——用CocoaPods做iOS程序的依赖管理》，这里就不做介绍了。 在CocoaPods的使用过程中，会根据Podfile的内容，来抓取第三方库的源文件和生成其它相关的文件。这些文件均存放在Pods目录中，并通过生成的Pods.xcodeproj项目来进行管理。除此之外，还有几个关键的文件位于目录：Po">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-01-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-01-11T13:20:39.000Z">
+<meta property="article:author" content="钱国强">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://gonefish.github.io/2017/01/07/Shared-CocoaPods-Project/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>CocoaPods进阶使用：共享Pods.xcodeproj给其它的Project | 酱酱不惊</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">酱酱不惊</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Break my life, rebuild it</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-legacy">
+
+    <a href="/legacy/" rel="section"><i class=" fa-fw"></i>legacy</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://gonefish.github.io/2017/01/07/Shared-CocoaPods-Project/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="钱国强">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="酱酱不惊">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CocoaPods进阶使用：共享Pods.xcodeproj给其它的Project
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-01-07 00:00:00" itemprop="dateCreated datePublished" datetime="2017-01-07T00:00:00+08:00">2017-01-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2017-01-11 21:20:39" itemprop="dateModified" datetime="2017-01-11T21:20:39+08:00">2017-01-11</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>CocoaPods是iOS平台上流行的第三方包管理工具。基本的介绍及使用方法可参考<a target="_blank" rel="noopener" href="http://blog.devtang.com/2014/05/25/use-cocoapod-to-manage-ios-lib-dependency/">《唐巧的博客——用CocoaPods做iOS程序的依赖管理》</a>，这里就不做介绍了。</p>
+<p>在CocoaPods的使用过程中，会根据Podfile的内容，来抓取第三方库的源文件和生成其它相关的文件。这些文件均存放在Pods目录中，并通过生成的Pods.xcodeproj项目来进行管理。除此之外，还有几个关键的文件位于目录：Pods&#x2F;Target Support Files&#x2F;Pods-XXX&#x2F; 中，下面会讲到如何使用它们来解决我们标题中的问题。</p>
+<h2 id="问题：什么情况下需要共享Pods-xcodeproj-？"><a href="#问题：什么情况下需要共享Pods-xcodeproj-？" class="headerlink" title="问题：什么情况下需要共享Pods.xcodeproj ？"></a>问题：什么情况下需要共享Pods.xcodeproj ？</h2><p>有很多iOS App会同时开发iPhone和iPad两个独立客户端，而不是开发单独的Universal客户端。这时候通常有两个.xcodeproj工程，虽然单个工程通过两个Target也能达到类似的效果，但这里不考虑这种情况。如果两个.xcodeproj工程可以共享Pods.xcodeproj，那么维护Pods会是非常的方便。</p>
+<span id="more"></span>
+
+<h2 id="示例：共享Pods-xcodeproj给其它的Project"><a href="#示例：共享Pods-xcodeproj给其它的Project" class="headerlink" title="示例：共享Pods.xcodeproj给其它的Project"></a>示例：共享Pods.xcodeproj给其它的Project</h2><p>让我们开始，看看如何通过一些设置来满足这个需求。</p>
+<h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><p>我们创建SharePodsDeme目录来放置我们的工程文件，包括：Phone和Pad项目文件。</p>
+<h3 id="创建SharePodsDemoPhone工程"><a href="#创建SharePodsDemoPhone工程" class="headerlink" title="创建SharePodsDemoPhone工程"></a>创建SharePodsDemoPhone工程</h3><p>我们创建一个空的示例项目SharePodsDemoPhone，放置在SharePodsDeme目录里，注意文件的层级关系如下：</p>
+<pre><code>SharePodsDeme/
+SharePodsDeme/SharePodsDemoPhone.xcodeproj
+SharePodsDeme/SharePodsDemoPhone/
+SharePodsDeme/SharePodsDemoPhone/*
+</code></pre>
+<p>在SharePodsDeme目录下创建Podfile，内容如下：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">platform <span class="symbol">:ios</span>, <span class="string">&#x27;8.0&#x27;</span></span><br><span class="line"><span class="comment">#use_frameworks!</span></span><br><span class="line"></span><br><span class="line">target <span class="string">&#x27;SharePodsDemoPhone&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  pod <span class="string">&#x27;AFNetworking&#x27;</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>执行pod install后，会生成SharePodsDemoPhone.xcworkspace，打开SharePodsDemoPhone.xcworkspace后，如下图：</p>
+
+
+<h3 id="创建SharePodsDemoPad工程"><a href="#创建SharePodsDemoPad工程" class="headerlink" title="创建SharePodsDemoPad工程"></a>创建SharePodsDemoPad工程</h3><p>用同样的方式在SharePodsDeme目录下创建SharePodsDemoPad工程，此时的目录结构见下图</p>
+
+
+<h3 id="拖入SharePodsDemoPad工程到SharePodsDemo工作区"><a href="#拖入SharePodsDemoPad工程到SharePodsDemo工作区" class="headerlink" title="拖入SharePodsDemoPad工程到SharePodsDemo工作区"></a>拖入SharePodsDemoPad工程到SharePodsDemo工作区</h3><p>将SharePodsDemoPhone.xcworkspace重命名为SharePodsDemo.xcworkspace后打开。将SharePodsDemoPad.xcodeproj拖入SharePodsDemo.xcworkspace中，注意：需要拖放到最顶层。</p>
+
+
+<p>现在就可以在SharePodsDemo工作区中同时管理SharePodsDemoPhone和SharePodsDemoPad这两个项目了，不过此时SharePodsDemoPad项目中还不能引入Pods中的文件的。</p>
+
+
+<h3 id="复制xcconfig"><a href="#复制xcconfig" class="headerlink" title="复制xcconfig"></a>复制xcconfig</h3><p>在SharePodsDemoPad项目中创建Pods的Group，然后在Pods&#x2F;Target Support Files&#x2F;Pods-SharePodsDemoPhone&#x2F;目录下找到Pods-SharePodsDemoPhone.debug.xcconfig和Pods-SharePodsDemoPhone.release.xcconfig这两个文件，并插入到新建的Pods Group中</p>
+
+
+<p>注意：不要勾选Copy items if needed</p>
+<h3 id="设置Configureations"><a href="#设置Configureations" class="headerlink" title="设置Configureations"></a>设置Configureations</h3><p>修改SharePodsDemoPad的项目Configureations设置，添加对应的配置文件，如下图</p>
+
+
+<h3 id="添加Build-Phases"><a href="#添加Build-Phases" class="headerlink" title="添加Build Phases"></a>添加Build Phases</h3><p>在Link Binary With Libraries中添加libPods-SharePodsDemoPhone.a</p>
+
+
+<p>这个时候再试试编译SharePodsDemoPad，应该可以编译成功了。</p>
+<p>为了让CocoaPods能够正常工作，还有几个Build Phases需要添加到SharePodsDemoPad中。这些Build Phases的名字都是以[CP]开头，具体的内容直接从SharePodsDemoPhone复制过来即可。</p>
+
+
+<p>这样所有的设置就完成了，以后可以方便的共享Pods中的内容了。上面的这个流程其实就是CocoaPods命令中所执行的部分内容。希望这篇文章能够让你对CocoaPods有进一步了了解。</p>
+<p>最终的项目文件：</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>其实你不需要手动完成上面的步骤，试着把Podfile改成下面的样式，然后pod install结果是一样的：）</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">platform <span class="symbol">:ios</span>, <span class="string">&#x27;8.0&#x27;</span></span><br><span class="line"><span class="comment">#use_frameworks!</span></span><br><span class="line"></span><br><span class="line">target <span class="string">&#x27;SharePodsDemoPhone&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  workspace <span class="string">&#x27;SharePodsDemo&#x27;</span></span><br><span class="line">  project <span class="string">&#x27;SharePodsDemoPhone&#x27;</span></span><br><span class="line">  pod <span class="string">&#x27;AFNetworking&#x27;</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">target <span class="string">&#x27;SharePodsDemoPad&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  workspace <span class="string">&#x27;SharePodsDemo&#x27;</span></span><br><span class="line">  project <span class="string">&#x27;SharePodsDemoPad&#x27;</span></span><br><span class="line">  pod <span class="string">&#x27;AFNetworking&#x27;</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><h3 id="替换RubyGems源"><a href="#替换RubyGems源" class="headerlink" title="替换RubyGems源"></a>替换RubyGems源</h3><p>由于河蟹的原因RubyGems无法正常访问，之前Taobao维护的镜像现在已经不再维护了，所以需要切换到Ruby China提供的镜像。</p>
+<p>请尽可能用比较新的 RubyGems 版本，建议 2.6.x 以上。</p>
+<pre><code>$ gem update --system # 这里请翻墙一下
+
+$ gem -v
+2.6.3
+
+$ gem sources --add https://gems.ruby-china.org/ --remove https://rubygems.org/
+
+$ gem sources -l
+https://gems.ruby-china.org
+# 确保只有 gems.ruby-china.org
+</code></pre>
+<p>查看详情或其它问题请访问 <a target="_blank" rel="noopener" href="https://gems.ruby-china.org/">https://gems.ruby-china.org</a></p>
+<h3 id="Pods目录是否要放入版本管理系统中？"><a href="#Pods目录是否要放入版本管理系统中？" class="headerlink" title="Pods目录是否要放入版本管理系统中？"></a>Pods目录是否要放入版本管理系统中？</h3><p>我的建议是把Pods目录也纳入版本管理系统之中，当然Podfile和Podfile.lock是必须放入版本管理系统中的。在团队开发过程中，确保开发环境的一致性非常重要。Pods目录中生成的文件会随着执行不同的命令而产生不同的变化，比如：不同CocoaPods版本；执行pod install或者pod update命令。另外，也保证了代码的完整性，在获取到最新的代码后，就可以开始编译项目了。</p>
+<p>这样做主要的缺点是纳入版本管理系统的文件会更多，这个应该不是什么大问题。大的二进制文件可以使用<a target="_blank" rel="noopener" href="https://git-lfs.github.com/">LFS</a>来管理。</p>
+<h3 id="CocoaPods进阶资料"><a href="#CocoaPods进阶资料" class="headerlink" title="CocoaPods进阶资料"></a>CocoaPods进阶资料</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://objccn.io/issue-6-4/">深入理解 CocoaPods</a></li>
+<li><a target="_blank" rel="noopener" href="http://draveness.me/cocoapods/">CocoaPods 都做了什么？</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/12/31/2016-Review/" rel="prev" title="2016年个人总结">
+      <i class="fa fa-chevron-left"></i> 2016年个人总结
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%EF%BC%9A%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E9%9C%80%E8%A6%81%E5%85%B1%E4%BA%ABPods-xcodeproj-%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">问题：什么情况下需要共享Pods.xcodeproj ？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B%EF%BC%9A%E5%85%B1%E4%BA%ABPods-xcodeproj%E7%BB%99%E5%85%B6%E5%AE%83%E7%9A%84Project"><span class="nav-number">2.</span> <span class="nav-text">示例：共享Pods.xcodeproj给其它的Project</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%86%E5%A4%87"><span class="nav-number">2.1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BASharePodsDemoPhone%E5%B7%A5%E7%A8%8B"><span class="nav-number">2.2.</span> <span class="nav-text">创建SharePodsDemoPhone工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BASharePodsDemoPad%E5%B7%A5%E7%A8%8B"><span class="nav-number">2.3.</span> <span class="nav-text">创建SharePodsDemoPad工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%96%E5%85%A5SharePodsDemoPad%E5%B7%A5%E7%A8%8B%E5%88%B0SharePodsDemo%E5%B7%A5%E4%BD%9C%E5%8C%BA"><span class="nav-number">2.4.</span> <span class="nav-text">拖入SharePodsDemoPad工程到SharePodsDemo工作区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6xcconfig"><span class="nav-number">2.5.</span> <span class="nav-text">复制xcconfig</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AEConfigureations"><span class="nav-number">2.6.</span> <span class="nav-text">设置Configureations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0Build-Phases"><span class="nav-number">2.7.</span> <span class="nav-text">添加Build Phases</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%90%8E"><span class="nav-number">3.</span> <span class="nav-text">最后</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E5%AE%83"><span class="nav-number">4.</span> <span class="nav-text">其它</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%BF%E6%8D%A2RubyGems%E6%BA%90"><span class="nav-number">4.1.</span> <span class="nav-text">替换RubyGems源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pods%E7%9B%AE%E5%BD%95%E6%98%AF%E5%90%A6%E8%A6%81%E6%94%BE%E5%85%A5%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E4%B8%AD%EF%BC%9F"><span class="nav-number">4.2.</span> <span class="nav-text">Pods目录是否要放入版本管理系统中？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CocoaPods%E8%BF%9B%E9%98%B6%E8%B5%84%E6%96%99"><span class="nav-number">4.3.</span> <span class="nav-text">CocoaPods进阶资料</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">钱国强</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">钱国强</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
