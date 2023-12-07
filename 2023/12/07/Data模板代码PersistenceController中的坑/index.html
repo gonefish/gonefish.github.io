@@ -20,28 +20,32 @@
     var CONFIG = {"hostname":"gonefish.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="酱酱不惊">
-<meta property="og:url" content="http://gonefish.github.io/index.html">
+  <meta name="description" content="文中谈到的问题与Core Data有关，故并不局限于SwiftUI应用或不启用CloudKit的场景。 在开发SwiftUI应用时，结合Core Data with CloudKit来提供跨平台数据同步的是个非常不错的选择。当通过Xcode创建使用Core Data with CloudKit新项目时，会提供一些模板代码，大致如下： 1234567891011121314151617181920s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Data模板代码PersistenceController中的坑">
+<meta property="og:url" content="http://gonefish.github.io/2023/12/07/Data%E6%A8%A1%E6%9D%BF%E4%BB%A3%E7%A0%81PersistenceController%E4%B8%AD%E7%9A%84%E5%9D%91/index.html">
 <meta property="og:site_name" content="酱酱不惊">
+<meta property="og:description" content="文中谈到的问题与Core Data有关，故并不局限于SwiftUI应用或不启用CloudKit的场景。 在开发SwiftUI应用时，结合Core Data with CloudKit来提供跨平台数据同步的是个非常不错的选择。当通过Xcode创建使用Core Data with CloudKit新项目时，会提供一些模板代码，大致如下： 1234567891011121314151617181920s">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-12-07T13:49:11.000Z">
+<meta property="article:modified_time" content="2023-12-07T13:50:05.332Z">
 <meta property="article:author" content="钱国强">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://gonefish.github.io/">
+<link rel="canonical" href="http://gonefish.github.io/2023/12/07/Data%E6%A8%A1%E6%9D%BF%E4%BB%A3%E7%A0%81PersistenceController%E4%B8%AD%E7%9A%84%E5%9D%91/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>酱酱不惊</title>
+  <title>Data模板代码PersistenceController中的坑 | 酱酱不惊</title>
   
 
 
@@ -145,9 +149,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -163,10 +168,9 @@
       <meta itemprop="name" content="酱酱不惊">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/12/07/Data%E6%A8%A1%E6%9D%BF%E4%BB%A3%E7%A0%81PersistenceController%E4%B8%AD%E7%9A%84%E5%9D%91/" class="post-title-link" itemprop="url">Data模板代码PersistenceController中的坑</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          Data模板代码PersistenceController中的坑
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -190,7 +194,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>文中谈到的问题与Core Data有关，故并不局限于SwiftUI应用或不启用CloudKit的场景。</p>
+        <p>文中谈到的问题与Core Data有关，故并不局限于SwiftUI应用或不启用CloudKit的场景。</p>
 <p>在开发SwiftUI应用时，结合Core Data with CloudKit来提供跨平台数据同步的是个非常不错的选择。当通过Xcode创建使用Core Data with CloudKit新项目时，会提供一些模板代码，大致如下：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">PersistenceController</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">let</span> shared <span class="operator">=</span> <span class="type">PersistenceController</span>()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> container: <span class="type">NSPersistentCloudKitContainer</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">inMemory</span>: <span class="type">Bool</span> <span class="operator">=</span> <span class="literal">false</span>) &#123;</span><br><span class="line">        container <span class="operator">=</span> <span class="type">NSPersistentCloudKitContainer</span>(name: <span class="string">&quot;CoreDataDemo&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> inMemory &#123;</span><br><span class="line">            container.persistentStoreDescriptions.first<span class="operator">!</span>.url <span class="operator">=</span> <span class="type">URL</span>(fileURLWithPath: <span class="string">&quot;/dev/null&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        container.loadPersistentStores(completionHandler: &#123; (storeDescription, error) <span class="keyword">in</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">let</span> error <span class="operator">=</span> error <span class="keyword">as</span> <span class="type">NSError</span>? &#123;</span><br><span class="line">                <span class="comment">// Replace this implementation with code to handle the error appropriately.</span></span><br><span class="line">                <span class="comment">// fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.</span></span><br><span class="line">                <span class="built_in">fatalError</span>(<span class="string">&quot;Unresolved error <span class="subst">\(error)</span>, <span class="subst">\(error.userInfo)</span>&quot;</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">        container.viewContext.automaticallyMergesChangesFromParent <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -232,340 +236,30 @@
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>通过在初始化方法中注入创建NSPersistentCloudKitContainer所需的参数，完成了对NSPersistentCloudKitContainer的强依赖。然后，通过创建不同的NSPersistentCloudKitContainer子类封装不同的配置。最终可以非常方便的创建不同的PersistenceController实例，应用到不同的场景中。</p>
 <p>完整Demo代码: <a target="_blank" rel="noopener" href="https://github.com/gonefish/CoreDataDemo">Github地址</a></p>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://gonefish.github.io/2017/01/07/Shared-CocoaPods-Project/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="钱国强">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="酱酱不惊">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/01/07/Shared-CocoaPods-Project/" class="post-title-link" itemprop="url">CocoaPods进阶使用：共享Pods.xcodeproj给其它的Project</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-01-07 00:00:00" itemprop="dateCreated datePublished" datetime="2017-01-07T00:00:00+08:00">2017-01-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2017-01-11 21:20:39" itemprop="dateModified" datetime="2017-01-11T21:20:39+08:00">2017-01-11</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>CocoaPods是iOS平台上流行的第三方包管理工具。基本的介绍及使用方法可参考<a target="_blank" rel="noopener" href="http://blog.devtang.com/2014/05/25/use-cocoapod-to-manage-ios-lib-dependency/">《唐巧的博客——用CocoaPods做iOS程序的依赖管理》</a>，这里就不做介绍了。</p>
-<p>在CocoaPods的使用过程中，会根据Podfile的内容，来抓取第三方库的源文件和生成其它相关的文件。这些文件均存放在Pods目录中，并通过生成的Pods.xcodeproj项目来进行管理。除此之外，还有几个关键的文件位于目录：Pods&#x2F;Target Support Files&#x2F;Pods-XXX&#x2F; 中，下面会讲到如何使用它们来解决我们标题中的问题。</p>
-<h2 id="问题：什么情况下需要共享Pods-xcodeproj-？"><a href="#问题：什么情况下需要共享Pods-xcodeproj-？" class="headerlink" title="问题：什么情况下需要共享Pods.xcodeproj ？"></a>问题：什么情况下需要共享Pods.xcodeproj ？</h2><p>有很多iOS App会同时开发iPhone和iPad两个独立客户端，而不是开发单独的Universal客户端。这时候通常有两个.xcodeproj工程，虽然单个工程通过两个Target也能达到类似的效果，但这里不考虑这种情况。如果两个.xcodeproj工程可以共享Pods.xcodeproj，那么维护Pods会是非常的方便。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/01/07/Shared-CocoaPods-Project/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://gonefish.github.io/2016/12/31/2016-Review/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="钱国强">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="酱酱不惊">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/12/31/2016-Review/" class="post-title-link" itemprop="url">2016年个人总结</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-12-31 23:28:21" itemprop="dateCreated datePublished" datetime="2016-12-31T23:28:21+08:00">2016-12-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2017-01-28 18:07:26" itemprop="dateModified" datetime="2017-01-28T18:07:26+08:00">2017-01-28</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="学习"><a href="#学习" class="headerlink" title="学习"></a>学习</h2><p>在整个2015年里，自己花在读书上的时间很少，这个问题也一直持续到2016年上半年。在结束这1年的高强度工作后，终于有时间可以多看看书了。今年在还买了Kindle后，明显的提高了我看书的效率，可以有更多的碎片时间拿来利用。</p>
-<p>2016年我的书单：《成为技术领导者》、《从优秀到卓越》、《人性的弱点》、《把时间当作朋友》、《人类简史：从动物到上帝》、《尼采：在世纪的转折点上》、《必然》、《引爆点》、《重新定义公司:谷歌是如何运营的》。</p>
-<p>年度最喜欢的书非《人类简史：从动物到上帝》莫属了，其实《把时间当作朋友》我也非常喜欢。</p>
-<p>除了看书，今年还报名了《混沌研习社》，成为付费会员，听了很多不同内容的分享。算是我在网上付费最大一笔的学习支出了，个人觉得还是非常值得的。</p>
-<h2 id="职业"><a href="#职业" class="headerlink" title="职业"></a>职业</h2><p>在今年里，终于结束了1年在创业公司的工作。这段的经历给我深深的上了一课，“传统企业玩互联网是找死，不转是等死”，这话说的真没错，传统企业是做不好互联网的。这次的失败让我对不靠谱的公司有了更一步的理解。</p>
-<p>这一整年里，自己的职业发展没有任何进步，这给了我非常大的紧迫感，我需要再次变革。</p>
-<h2 id="生活"><a href="#生活" class="headerlink" title="生活"></a>生活</h2><p>2016年里上海房价疯狂上涨，幅度前所未闻，不少地方都直接翻翻了，让我非常的郁闷。为什么一个国家可以让这样不公平的事情一直发生？虽然，我大兲朝本来就是这样。</p>
-<p>2016年将要过去了，我们又多相处了一年，也见了我们的父母，终于快要修成正果了，这算是我2016里最大的收获。</p>
-<h2 id="2017"><a href="#2017" class="headerlink" title="2017"></a>2017</h2><p>2017年必然是我人生最重要的一个阶段，我必须投入更大的努力来证明我可以的。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://gonefish.github.io/2016/09/16/%E6%8A%8A%E6%97%B6%E9%97%B4%E5%BD%93%E4%BD%9C%E6%9C%8B%E5%8F%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="钱国强">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="酱酱不惊">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/09/16/%E6%8A%8A%E6%97%B6%E9%97%B4%E5%BD%93%E4%BD%9C%E6%9C%8B%E5%8F%8B/" class="post-title-link" itemprop="url">《把时间当作朋友》读书小记</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-09-16 14:49:56" itemprop="dateCreated datePublished" datetime="2016-09-16T14:49:56+08:00">2016-09-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2017-01-11 21:21:14" itemprop="dateModified" datetime="2017-01-11T21:21:14+08:00">2017-01-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/books/" itemprop="url" rel="index"><span itemprop="name">读书</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>最近这段时间发现自己对GTD的实践有所懈怠，所以想重读<a target="_blank" rel="noopener" href="https://book.douban.com/subject/4849382/">《尽管去做——无压工作的艺术》</a>，后来改变主意还是想找另外一本讲GTD的书，结果找到了这一本<a target="_blank" rel="noopener" href="https://www.amazon.cn/%E6%8A%8A%E6%97%B6%E9%97%B4%E5%BD%93%E4%BD%9C%E6%9C%8B%E5%8F%8B-%E6%9D%8E%E7%AC%91%E6%9D%A5/dp/B00FU3CRZI/ref=sr_1_1?ie=UTF8&qid=1474331436&sr=8-1&keywords=%E6%8A%8A%E6%97%B6%E9%97%B4%E5%BD%93%E4%BD%9C%E6%9C%8B%E5%8F%8B">《把时间当朋友》</a>。由于之前在KnewOne上买过东西，立即对这本书有了好感。虽然4月份就买了，但一直到7月才开始阅读，然后一发不可收拾，这本书的名字太低调了。让我想起了电影<a target="_blank" rel="noopener" href="https://movie.douban.com/subject/3793023/">《三傻大闹宝莱坞》</a>，虽然名字很平常，但所展现的内容却是非同一般。</p>
-<p>在书里从心理学、科学、哲学多个的角度来描述开启心智的重要性。这个重要性足以影响每个人的生活、工作、思想的方方面面。</p>
-<p>通过各种日常生活中的例子，更深入一下展现这些例子背后的问题，而这些问题通常是我们不想去想、不敢去想或者根本就没有想过的。特别是一些很现实的问题，比如：绝大多数人都不“成功”。那所谓的“成功”究竟是什么意思呢？是这个社会定义的“成功”？还是你自己定义的“成功”？还是你所追求的只是别人的成功？</p>
-<p>有意思的是，这个问题的答案，在我最近读的一本书<a target="_blank" rel="noopener" href="https://www.amazon.cn/Yuval-Noah-Harari/dp/B00T95D35G/ref=tmm_kin_swatch_0?_encoding=UTF8&qid=1474331397&sr=8-1">《人类简史》</a>里，可以找到一些线索。而且这本书里谈到了“自知”的问题，里面有句话：“平庸的人也有权利快乐”。</p>
-<p>这本书里的内容是不能从别人那里理解的，开启心智只能是自己的事。附上摘抄的笔记：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/09/16/%E6%8A%8A%E6%97%B6%E9%97%B4%E5%BD%93%E4%BD%9C%E6%9C%8B%E5%8F%8B/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/01/07/Shared-CocoaPods-Project/" rel="prev" title="CocoaPods进阶使用：共享Pods.xcodeproj给其它的Project">
+      <i class="fa fa-chevron-left"></i> CocoaPods进阶使用：共享Pods.xcodeproj给其它的Project
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://gonefish.github.io/2016/06/01/Good-To-Great-Review/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="钱国强">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="酱酱不惊">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/06/01/Good-To-Great-Review/" class="post-title-link" itemprop="url">《从优秀到卓越》读书笔记</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2016-06-01 14:43:37" itemprop="dateCreated datePublished" datetime="2016-06-01T14:43:37+08:00">2016-06-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2017-01-11 21:21:25" itemprop="dateModified" datetime="2017-01-11T21:21:25+08:00">2017-01-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/books/" itemprop="url" rel="index"><span itemprop="name">读书</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>无论你是在上班还是在创业，这本书都能帮助你预测公司的未来。书中提到的“3个训练有素”非常具有指导意义：</p>
-<ol>
-<li>训练有素的人</li>
-<li>训练有素的思想</li>
-<li>训练有素的行为</li>
-</ol>
-<p>更新笔记整理 2016.10.1</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2016/06/01/Good-To-Great-Review/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
   
 
 
@@ -618,6 +312,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#PersistenceController%E4%B8%AD%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">PersistenceController中的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Swift%E7%9A%84%E5%8D%95%E4%BE%8B%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">Swift的单例问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%81%8C%E8%B4%A3%E8%BF%87%E5%A4%9A%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96%E6%96%B9%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">职责过多的初始化方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fatalError"><span class="nav-number">1.3.</span> <span class="nav-text">fatalError</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%87%8D%E6%9E%84PersistenceController"><span class="nav-number">2.</span> <span class="nav-text">重构PersistenceController</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E5%8C%96init%E6%96%B9%E6%B3%95"><span class="nav-number">2.1.</span> <span class="nav-text">优化init方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BANSPersistentCloudKitContainer%E7%9A%84%E5%AD%90%E7%B1%BB"><span class="nav-number">2.2.</span> <span class="nav-text">创建NSPersistentCloudKitContainer的子类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%8D%E5%90%8C%E7%9A%84%E9%9D%99%E6%80%81%E5%B1%9E%E6%80%A7"><span class="nav-number">2.3.</span> <span class="nav-text">创建不同的静态属性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
