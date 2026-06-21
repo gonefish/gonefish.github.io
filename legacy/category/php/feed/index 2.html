@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>PHP &#8211; 骨头鱼的墓</title>
+	<atom:link href="http://gonefish.info/category/php/feed/" rel="self" type="application/rss+xml" />
+	<link>http://gonefish.info</link>
+	<description>Changing Anytime</description>
+	<lastBuildDate>Sun, 27 Mar 2016 14:52:09 +0000</lastBuildDate>
+	<language>zh-CN</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.6.1</generator>
+	<item>
+		<title>不折腾之搭建Mac上的PHP开发环境</title>
+		<link>http://gonefish.info/2010/08/%e4%b8%8d%e6%8a%98%e8%85%be%e4%b9%8b%e6%90%ad%e5%bb%bamac%e4%b8%8a%e7%9a%84php%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83/</link>
+		<pubDate>Sat, 28 Aug 2010 13:39:37 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[OS X]]></category>
+		<category><![CDATA[PHP]]></category>
+		<category><![CDATA[思念的东西]]></category>
+
+		<guid isPermaLink="false">http://gonefish.info/blog/?p=659</guid>
+		<description><![CDATA[在最开始使用MacBook的时候写过一篇使用macport架设PHP开发环境的文章，但我现在已经不想在折腾这种 &#8230; <a href="http://gonefish.info/2010/08/%e4%b8%8d%e6%8a%98%e8%85%be%e4%b9%8b%e6%90%ad%e5%bb%bamac%e4%b8%8a%e7%9a%84php%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83/" class="more-link">继续阅读<span class="screen-reader-text">“不折腾之搭建Mac上的PHP开发环境”</span></a>]]></description>
+				<content:encoded><![CDATA[<p>在最开始使用MacBook的时候写过一篇使<a href="?p=521" target="_blank">用macport架设PHP开发环境</a>的文章，但我现在已经不想在折腾这种事情了，我想这是一些对于认识的进化吧。</p>
+<p>在最初开始学习PHP的时候，一个集成环境是多么的方便，在不理解Apache，PHP，MySQL之间的关系的时候，可以让初学者失去学习的兴趣，而PHP是一种Web语言，很少独立使用。当已经入门后，开始想搞明白开发环境，所以会选择自行搭建一个，从中也可以了解其中的一些关系。就这样开始折腾不同的安装方法与配置参数，并以此为乐趣。当对这些原理后，渐渐的失去了不断折腾的兴趣，更希望一种集成环境来简化一些工作，并且自己也可以非常灵活的设置相关配置参数。（其实这跟重装系统是一样的，想当年就经常重装系统，结果到后来，1年不重装系统是多么正常。）</p>
+<p>在Mac系统下，集成环境不像Win那么多，XAMPP的设置非常不爽，整个目录是/Applications下面。还好Zend官方提供了Zend Server Community Edition产品，于是使用了一下，还不错，Apache，PHP，MySQL，phpMyAdmin这些基本的都有了，但还是有些东西需要调整。</p>
+<p>下载好DMG后，直接安装，Zend Controller直接拖到应用目录就行了。所有的东西被安装到了/usr/local/zend 目录下面去了。/usr/local/zend/bin/zendctl.sh 这个脚本是管理服务脚本。Zend Server Community Edition产品自带一个管理界面，这个Web应用是使用lighttpd做为服务器，所以如果需要使用Web管理应用需要启动lighttpd服务器。注意：默认的Apache的端口不是80，所以可以自动调整一下。/usr/local/zend/apache2/htdocs的目录用户权限级是staff，所以在这个目录创建文件不需要管理员权限。</p>
+<p>phpmyadmin也是由lighttpd提供服务的，而且默认配置只能使用127.0.0.1来进行访问。编辑/usr/local/zend/gui/lighttpd/etc/lighttpd.conf文件，搜索phpmyadmin，修改成url.access-deny = ( &#8220;localhost&#8221; )。然后重启lighttpd，可以使用上面的脚本。</p>
+<p>MySQL的root用户没有密码。不过有一个问题默认的MySQL没有使用端口监听的方式运行，而是使用Unix的socket通信的。我试着修改/usr/local/zend/mysql/data/my.cnf 但总是不成功。</p>
+<p>另外还集成了Zend Framework和Zend Debug这些有用的东西。</p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>Mac OS X 10.6下简单搭建Lighttpd+PHP+MySQL环境</title>
+		<link>http://gonefish.info/2009/12/mac-os-x-10-6%e4%b8%8b%e7%ae%80%e5%8d%95%e6%90%ad%e5%bb%balighttpdphpmysql%e7%8e%af%e5%a2%83/</link>
+		<comments>http://gonefish.info/2009/12/mac-os-x-10-6%e4%b8%8b%e7%ae%80%e5%8d%95%e6%90%ad%e5%bb%balighttpdphpmysql%e7%8e%af%e5%a2%83/#comments</comments>
+		<pubDate>Tue, 22 Dec 2009 05:10:39 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[OS X]]></category>
+		<category><![CDATA[PHP]]></category>
+
+		<guid isPermaLink="false">http://gonefish.cn/?p=521</guid>
+		<description><![CDATA[其实这类文章网上已经比较多了，不过现在最新的版本是10.6，所以重新整理一下。并且尽量使用官方提供的安装包。  &#8230; <a href="http://gonefish.info/2009/12/mac-os-x-10-6%e4%b8%8b%e7%ae%80%e5%8d%95%e6%90%ad%e5%bb%balighttpdphpmysql%e7%8e%af%e5%a2%83/" class="more-link">继续阅读<span class="screen-reader-text">“Mac OS X 10.6下简单搭建Lighttpd+PHP+MySQL环境”</span></a>]]></description>
+				<content:encoded><![CDATA[<p>其实这类文章网上已经比较多了，不过现在最新的版本是10.6，所以重新整理一下。并且尽量使用官方提供的安装包。</p>
+<p>虽然在Mac OS X 10.6中是自带<a href="http://httpd.apache.org/" target="_blank">Apache</a>，但没有mod_php5，所以没法简单的开启php的支持。不过在Mac OS X 10.5中是自带mod_php的。如果在Mac OS X下做开发，MacPorts是必不可少的东西，这是一款包管理软件。当然，还是有其它的包管理系统<a href="http://www.finkproject.org/" target="_blank">Fink</a>、<a href="http://github.com/mxcl/homebrew" target="_blank">Homebrew</a>这些选择，不过今天的重点是如何快速的搭建Lighttpd+PHP+MySQL环境。</p>
+<p>首先，需要安装<a target="_blank" href="http://www.macports.org/">MacPorts</a>，在安装之前，必须先安装Xcode Tools，在安装选项确保已经选中命令行开发。一般买Mac的时候，会附赠两张光盘：系统盘和开发工具盘，你可以在开发工具盘里找到Xcode Tools，或者去<a target="_blank"  href="http://developer.apple.com/">Apple官方网站</a>去下载最新的Xcode Tools。</p>
+<p>在MacPorts的<a href="http://www.macports.org/install.php" target="_blank">官方下载页面</a>选择你的Mac OS X版本，最新的版本是1.8，下载好镜像运行安装程序即可。在安装过程中会进行源码树同步，所以不必在安装完成后执行sudo port -v selfupdate。</p>
+<p>安装lighttpd非常简单，只需要执行：<br />
+sudo port install lighttpd</p>
+<p>等安装完毕后，按提示执行：<br />
+sudo launchctl load -w /Library/LaunchDaemons/org.macports.lighttpd.plist</p>
+<p>运行之后每次开机会自动启动lighttpd，之后你需要创建一个默认的配置文件，不过已经有一个样例文件<br />
+cd /opt/local/etc/lighttpd/<br />
+cp lighttpd.conf.default lighttpd.conf</p>
+<p>在lighttpd.conf的配置文件中，取消mod_fastcgi前面注释，以启用fastcgi的支持。接着搜索fastcgi.server，取消该配置项前面的注释。类似于下面<br />
+fastcgi.server             = ( &#8220;.php&#8221; =><br />
+                               ( &#8220;localhost&#8221; =><br />
+                                 (<br />
+                                   &#8220;socket&#8221; => &#8220;/opt/local/var/run/lighttpd/php-fastcgi.socket&#8221;,<br />
+                                   &#8220;bin-path&#8221; => &#8220;/opt/local/bin/php-cgi&#8221;,<br />
+                                   &#8220;max-procs&#8221; => 1,<br />
+                                   &#8220;bin-environment&#8221; => (<br />
+                                       &#8220;PHP_FCGI_CHILDREN&#8221; => &#8220;1&#8221;<br />
+                                   ),<br />
+                                 )<br />
+                               )<br />
+                            )<br />
+由于是在自己的开发机上，可以设定PHP_FCGI_CHILDREN为1，这样就只会产生一个php-cgi进程。</p>
+<p>注意：请确保/opt/local/var/log/和/opt/local/var/run/这两个目录可写，通过以下命令修改权限，<br />
+sudo chmod 777 -R /opt/local/var/log/<br />
+sudo chmod 777 -R /opt/local/var/run/</p>
+<p>现在开始安装MySQL，为了简单方便，我们直接从<a href="http://dev.mysql.com/downloads/mysql/5.1.html#macosx-dmg" target="_blank">官方网站下载</a>已经做好的镜像文件，在安装镜像文件中，自带了系统偏好设置项，安装之后可以通过系统偏好设置项来启动MySQL。</p>
+<p>最后，安装PHP，需要注意在最新的MacPorts中有4个版本的PHP：php4、php5、php5-devel、php52，其中php5是最新的PHP 5.3，其它的一些库的只支持这个版本的，所以这里我就安装php5这个版本。至少php 5.3和php 5.2的区别可以去查看一下文档。由于使用fastcgi运行，所以在安装php5的时候加上fastcgi这个参数，<br />
+sudo port install php5 + fastcgi</p>
+<p>安装完成后，我们需要创建一个 php.ini文件<br />
+sudo cd /opt/local/etc/php5/<br />
+sudo cp php.ini-development php.ini</p>
+<p>在php.ini文件中找到cgi.fix_pathinfo = 1这一行，取消前面的注释。</p>
+<p>在PHP 5.3中有一点需要说明，MySQL的原生驱动已经在PHP的源码里面了，在原先的版本中PHP的MySQL扩展使用的是libmysql这个库，不过现在已经内置了一个性能更好的库。注意：这和mysql扩展不是一类东西，所以，在PHP中依然使用mysql、mysqli、pdo_mysql这三种扩展。要安装这三个扩展的支持也非常简单，<br />
+sudo port install php5-mysql</p>
+<p>安装完成后，需要设定mysql的socket连接，修改php.ini文件中以下几项</p>
+<p>pdo_mysql.default_socket=/tmp/mysql.sock<br />
+mysql.default_socket =/tmp/mysql.sock<br />
+mysqli.default_socket =/tmp/mysql.sock</p>
+<p>这样一个简单的Lighttpd+PHP+MySQL环境就可以运行了。</p>
+]]></content:encoded>
+			<wfw:commentRss>http://gonefish.info/2009/12/mac-os-x-10-6%e4%b8%8b%e7%ae%80%e5%8d%95%e6%90%ad%e5%bb%balighttpdphpmysql%e7%8e%af%e5%a2%83/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+		</item>
+		<item>
+		<title>在Mac OS X 10.6上安装PHPUnit</title>
+		<link>http://gonefish.info/2009/12/%e5%9c%a8mac-os-x-10-6%e4%b8%8a%e5%ae%89%e8%a3%85phpunit/</link>
+		<pubDate>Sun, 13 Dec 2009 04:19:23 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[OS X]]></category>
+		<category><![CDATA[PHP]]></category>
+
+		<guid isPermaLink="false">http://gonefish.cn/?p=517</guid>
+		<description><![CDATA[在最新的Mac OS X 10.6中，默认自带一个CLI的PHP解释器和PEAR库，所以安装PHPUnit非常 &#8230; <a href="http://gonefish.info/2009/12/%e5%9c%a8mac-os-x-10-6%e4%b8%8a%e5%ae%89%e8%a3%85phpunit/" class="more-link">继续阅读<span class="screen-reader-text">“在Mac OS X 10.6上安装PHPUnit”</span></a>]]></description>
+				<content:encoded><![CDATA[<p>在最新的Mac OS X 10.6中，默认自带一个CLI的PHP解释器和PEAR库，所以安装P<a href="http://www.phpunit.de/" target="_blank">HPUnit</a>非常方便，但按PHPUnit的文档说明可能会出现安装不成功的问题，这是由于PEAR库比较旧，需要升级一下。打开终端执行：<br />
+sudo pear upgrade PEAR<br />
+然后再按<a  target="_blank"  href="http://www.phpunit.de/manual/current/en/installation.html">PHPUnit文档中安装章节</a>中的那样：<br />
+sudo pear channel-discover pear.phpunit.de<br />
+sudo pear install –alldeps phpunit/PHPUnit<br />
+完成之后就可以运行phpunit了。</p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>最好的PHP开发工具Aptana PHP</title>
+		<link>http://gonefish.info/2009/11/%e6%9c%80%e5%a5%bd%e7%9a%84php%e5%bc%80%e5%8f%91%e5%b7%a5%e5%85%b7aptana-php/</link>
+		<comments>http://gonefish.info/2009/11/%e6%9c%80%e5%a5%bd%e7%9a%84php%e5%bc%80%e5%8f%91%e5%b7%a5%e5%85%b7aptana-php/#comments</comments>
+		<pubDate>Sun, 29 Nov 2009 10:44:01 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[PHP]]></category>
+
+		<guid isPermaLink="false">http://gonefish.cn/?p=336</guid>
+		<description><![CDATA[关于PHP编辑器的文章已经很很多了，也许有些商业软件要这本文中提到的Aptana要好得多，这里我们只讨论商业软 &#8230; <a href="http://gonefish.info/2009/11/%e6%9c%80%e5%a5%bd%e7%9a%84php%e5%bc%80%e5%8f%91%e5%b7%a5%e5%85%b7aptana-php/" class="more-link">继续阅读<span class="screen-reader-text">“最好的PHP开发工具Aptana PHP”</span></a>]]></description>
+				<content:encoded><![CDATA[<p>关于PHP编辑器的文章已经很很多了，也许有些商业软件要这本文中提到的Aptana要好得多，这里我们只讨论商业软件(如果破解的话也是免费的)和免费软件。让我写这篇文章的目的是为了让更多的人使用更好的软件，但这里有个问题是Aptana2.0挡住真相。</p>
+<p>Aptana最新的版本已经到了2.0，但我在查询发行声明时发现Aptana 2.0已经放弃了Aptana PHP插件的开发，在最新本中只支持PDT。关于PDT是个什么东西我非常清楚，就是因为有了Aptana PHP，我放弃了Zend Studio 6的破解版。而PDT只是Zend Studio 6的基础，Zend公司在这之上做了许多强化后，拿出来卖，如果你试用过两者，会发现在这两者完全是天壤之别。</p>
+<p>如果你需要以下功能：</p>
+<ul>
+<li>PHP的语法提示和错误检测。</li>
+<li>PHP的函数和类名称提示（包括内建和自己开发）。</li>
+<li>函数和类的文件跳转。</li>
+<li>文件的大纲显示。</li>
+<li>PHP的Debug（这个功能没有Zend Studio 6方便）。</li>
+<li>强大的搜索功能。</li>
+<li>集成版本控制客户端。</li>
+<li>其它&#8230;</li>
+</ul>
+<p>如果你熟悉Eclipse平台的话，可以得到更多你想要的功能，因为Aptana也是基于Eclipse的。从Aptana  1.5开始，基于Eclipse 3.5，这个版本的Mac是Cocoa的，所以在Mac中的性能提升非常明显。</p>
+<p>安装方法最重要的一点是要下载Aptana 1.5版，然后在插件安装界面中选择Aptana PHP，这是官方的<a href="https://aptanastudio.tenderapp.com/faqs/installing-aptana-studio/downloading-aptana-studio-151-and-aptana-php">下载Aptana Studio 1.5.1 and Aptana PHP</a>的文档说明。提示：Pydev已经被这个公司收购了，所以Aptana也是支持Python开发的。</p>
+<p>最后，我想是不是Aptana开发商发生了一些变动，导致放弃了Aptana PHP插件的开发，难道是某些外部的压力？不知道在PDT的后继版本中看能不能满足我的要求，等3.0了再来试试。</p>
+]]></content:encoded>
+			<wfw:commentRss>http://gonefish.info/2009/11/%e6%9c%80%e5%a5%bd%e7%9a%84php%e5%bc%80%e5%8f%91%e5%b7%a5%e5%85%b7aptana-php/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>PHP模板引擎Shine</title>
+		<link>http://gonefish.info/2009/06/php%e6%a8%a1%e6%9d%bf%e5%bc%95%e6%93%8eshine/</link>
+		<comments>http://gonefish.info/2009/06/php%e6%a8%a1%e6%9d%bf%e5%bc%95%e6%93%8eshine/#comments</comments>
+		<pubDate>Sun, 07 Jun 2009 03:28:38 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[PHP]]></category>
+
+		<guid isPermaLink="false">http://gonefish.cn/weblog/php5-implement-django-template-engine/</guid>
+		<description><![CDATA[Shine的开发工作终于达到了一个阶段，大部分实现了Django的模板系统，并在其中添加了一些额外的东西，剩下 &#8230; <a href="http://gonefish.info/2009/06/php%e6%a8%a1%e6%9d%bf%e5%bc%95%e6%93%8eshine/" class="more-link">继续阅读<span class="screen-reader-text">“PHP模板引擎Shine”</span></a>]]></description>
+				<content:encoded><![CDATA[<p>Shine的开发工作终于达到了一个阶段，大部分实现了Django的模板系统，并在其中添加了一些额外的东西，剩下的工作是准备进行实际测试，准备在最近工作中应用，希望能够得到反馈，之后发布1.0版。</p>
+<p>源码发布在：<a href="http://bitbucket.org/gonefish/shine">http://bitbucket.org/gonefish/shine</a></p>
+<p><a href="http://gonefish.info/blog/?page_id=333">入门指南</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://gonefish.info/2009/06/php%e6%a8%a1%e6%9d%bf%e5%bc%95%e6%93%8eshine/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+		</item>
+		<item>
+		<title>PHP会变成什么样</title>
+		<link>http://gonefish.info/2009/05/php%e4%bc%9a%e5%8f%98%e6%88%90%e4%bb%80%e4%b9%88%e6%a0%b7/</link>
+		<comments>http://gonefish.info/2009/05/php%e4%bc%9a%e5%8f%98%e6%88%90%e4%bb%80%e4%b9%88%e6%a0%b7/#comments</comments>
+		<pubDate>Tue, 12 May 2009 14:45:13 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[PHP]]></category>
+
+		<guid isPermaLink="false">http://gonefish.cn/weblog/2009-5-12-2/</guid>
+		<description><![CDATA[现在是PHP 5.3.0这个版本已经RC2了，这个版本就是一个重要的过度版本，因为她带来了许多新的特性，这个版 &#8230; <a href="http://gonefish.info/2009/05/php%e4%bc%9a%e5%8f%98%e6%88%90%e4%bb%80%e4%b9%88%e6%a0%b7/" class="more-link">继续阅读<span class="screen-reader-text">“PHP会变成什么样”</span></a>]]></description>
+				<content:encoded><![CDATA[<p>现在是PHP 5.3.0这个版本已经RC2了，这个版本就是一个重要的过度版本，因为她带来了许多新的特性，这个版本和PHP6的区别仅仅在于unicode。在这个版本里有一个我很在意的东西，就是名字空间，如果使用名字空间就可以避免命名冲突的问题。</p>
+<p>由于此前PHP一直没有命名空间，一直使用伪类名约定<span>，</span>即类命名是对应于其所属文件的目录结构。通过这种方式来避免冲突，你是否发现，这种用法让PHP看起来更&ldquo;OO&rdquo;了，我是指到处都是Class了。而且，像现在官方也推出了ZF，一个完全PHP5的框架，但在理解了PHP的运行方式后，开始质疑PHP难道一样搞成这样复杂吗？</p>
+<p>虽然PHP 5.3.0带来了命名空间，但那shit的语法实在是让人受不了，虽然ROR很火，所以ZF中很多东西都是借鉴于此，但有些东西就算借鉴，也感觉是坚加上去了，完全感受不到流畅的开发感觉。</p>
+<p>在此前我已经移植了Django的模板系统，现在虽然已经移植完成，但文档还没有写完，已经拖了很长时间了，非常抱歉，如果有时间我会继承来完善一个适合于PHP的Web开发框架，当然首先是大家觉得这个Shine好用才行。</p>
+<ul>
+<div></div>
+</ul>
+]]></content:encoded>
+			<wfw:commentRss>http://gonefish.info/2009/05/php%e4%bc%9a%e5%8f%98%e6%88%90%e4%bb%80%e4%b9%88%e6%a0%b7/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>用PHP实现Django的模板系统</title>
+		<link>http://gonefish.info/2009/04/%e7%94%a8php%e5%ae%9e%e7%8e%b0django%e7%9a%84%e6%a8%a1%e6%9d%bf%e7%b3%bb%e7%bb%9f/</link>
+		<comments>http://gonefish.info/2009/04/%e7%94%a8php%e5%ae%9e%e7%8e%b0django%e7%9a%84%e6%a8%a1%e6%9d%bf%e7%b3%bb%e7%bb%9f/#comments</comments>
+		<pubDate>Wed, 22 Apr 2009 12:53:28 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[Django]]></category>
+		<category><![CDATA[PHP]]></category>
+
+		<guid isPermaLink="false">http://gonefish.cn/weblog/2009-3-13-1/</guid>
+		<description><![CDATA[这几天一直没有在做lifefix的开发工作，因为突然想用PHP实现一个Django的模版系统。如果不去试一试这 &#8230; <a href="http://gonefish.info/2009/04/%e7%94%a8php%e5%ae%9e%e7%8e%b0django%e7%9a%84%e6%a8%a1%e6%9d%bf%e7%b3%bb%e7%bb%9f/" class="more-link">继续阅读<span class="screen-reader-text">“用PHP实现Django的模板系统”</span></a>]]></description>
+				<content:encoded><![CDATA[<p>这几天一直没有在做lifefix的开发工作，因为突然想用PHP实现一个Django的模版系统。如果不去试一试这个想法的话，估计我的开发工作也做不得不安宁。</p>
+<p>开始分析django模板的源代码，一边用PHP来实现，现在基本上理解了其原理，现正在一步一步的实现。啊，期待一个完整的实现。</p>
+<p>更新：现在已经移植了大部分功能，但自定义tag方面还没有完成，然后代码还有优化的余地。下周最好整理一下代码，然后发布出来。</p>
+<p>移植工作已经基本上完成了，还有些filter没移植，但是支持PHP内部函数，发布在<a href="http://bitbucket.org/gonefish/shine/">http://bitbucket.org/gonefish/shine/</a>这里。</p>
+<p>现在在准备文档。</p>
+]]></content:encoded>
+			<wfw:commentRss>http://gonefish.info/2009/04/%e7%94%a8php%e5%ae%9e%e7%8e%b0django%e7%9a%84%e6%a8%a1%e6%9d%bf%e7%b3%bb%e7%bb%9f/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+		</item>
+		<item>
+		<title>内容管理框架</title>
+		<link>http://gonefish.info/2009/03/%e5%86%85%e5%ae%b9%e7%ae%a1%e7%90%86%e6%a1%86%e6%9e%b6/</link>
+		<comments>http://gonefish.info/2009/03/%e5%86%85%e5%ae%b9%e7%ae%a1%e7%90%86%e6%a1%86%e6%9e%b6/#comments</comments>
+		<pubDate>Sat, 28 Mar 2009 05:23:32 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[PHP]]></category>
+
+		<guid isPermaLink="false">http://gonefish.cn/weblog/2009-3-28-1/</guid>
+		<description><![CDATA[不知道PHP有没有这种东西，某国内的CMS系统代码也真是写的烂，而且架构不清晰。如果有一个基础的内容管理框架， &#8230; <a href="http://gonefish.info/2009/03/%e5%86%85%e5%ae%b9%e7%ae%a1%e7%90%86%e6%a1%86%e6%9e%b6/" class="more-link">继续阅读<span class="screen-reader-text">“内容管理框架”</span></a>]]></description>
+				<content:encoded><![CDATA[<p>不知道PHP有没有这种东西，某国内的CMS系统代码也真是写的烂，而且架构不清晰。如果有一个基础的内容管理框架，然后在这之上再进行开发，那该有多好啊。</p>
+<p>基于zope的cmf应该是个值得参考的东西</p>
+]]></content:encoded>
+			<wfw:commentRss>http://gonefish.info/2009/03/%e5%86%85%e5%ae%b9%e7%ae%a1%e7%90%86%e6%a1%86%e6%9e%b6/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>PHP中的include</title>
+		<link>http://gonefish.info/2009/03/php%e4%b8%ad%e7%9a%84include/</link>
+		<pubDate>Sun, 15 Mar 2009 04:29:44 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[PHP]]></category>
+
+		<guid isPermaLink="false">http://gonefish.cn/weblog/php-include-eval/</guid>
+		<description><![CDATA[这几天在做一个PHP的模板引擎，这是一个有许多对象的东西，但是在PHP中没有命名空间，所以一般会采用PEAR的 &#8230; <a href="http://gonefish.info/2009/03/php%e4%b8%ad%e7%9a%84include/" class="more-link">继续阅读<span class="screen-reader-text">“PHP中的include”</span></a>]]></description>
+				<content:encoded><![CDATA[<p>这几天在做一个PHP的模板引擎，这是一个有许多对象的东西，但是在PHP中没有命名空间，所以一般会采用PEAR的命名方法来组织类，这样的话就有许多的类分布在大量的小文件上，这样在加载的时候会造成性能的损失。为了解决这个问题我研究了一下include这个东西，通过查看源码和一些网络上的资料，发现在include和eval在底层实际是同一个东西，如果在一个文件中加载所有的类，这样只要包含这个文件就能获得所有的类了，还能保存不会存在类的命名空间问题。如果再通过apc这类中间码缓存系统，性能应该会更好。</p>
+<p>实际上，在ZF1.7中的Zend_Loader就有这样的缓存方案，并且在官方文档的性能优化章节也说明了。</p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>Zend Framework MVC流程图说明</title>
+		<link>http://gonefish.info/2009/02/zend-framework-mvc%e6%b5%81%e7%a8%8b%e5%9b%be%e8%af%b4%e6%98%8e/</link>
+		<pubDate>Sun, 15 Feb 2009 16:04:59 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+				<category><![CDATA[PHP]]></category>
+		<category><![CDATA[Zend-Framework]]></category>
+
+		<guid isPermaLink="false">http://gonefish.cn/weblog/explain-zend-framework-mvc-flow/</guid>
+		<description><![CDATA[这个图是ZF文档中的，7.2节的图。由于中文文档还没有翻译，所以先搞个图看看，这个图画的非常好，非常明朗。&#038;n &#8230; <a href="http://gonefish.info/2009/02/zend-framework-mvc%e6%b5%81%e7%a8%8b%e5%9b%be%e8%af%b4%e6%98%8e/" class="more-link">继续阅读<span class="screen-reader-text">“Zend Framework MVC流程图说明”</span></a>]]></description>
+				<content:encoded><![CDATA[<p>这个图是ZF文档中的，7.2节的图。由于中文文档还没有翻译，所以先搞个图看看，这个图画的非常好，非常明朗。&nbsp;</p>
+<p><span style="text-decoration: line-through;">我已经用不同的颜色标注了不同的部分。主要流程是绿色块，黄色部分是钩子，这种蓝色代表Request和Response对象，紫红色部分判断是否dispath完毕。基本方向就是：Request -&gt; Router -&gt; Dispatch -&gt; Send Response</span></p>
+<p><strong>更新</strong>：</p>
+<p><img src="http://www.lifefix.cn/static/attachments/article/7/ZF1.png" alt="" width="659" height="771" /></p>
+<p>&nbsp;</p>
+<h1><a title="Zend_Controller架构详解" href="http://www.lifefix.cn/article/Zend-Controller-Architecture/">Zend_Controller架构详解</a></h1>
+<p><strong>更详细的说明请参看<a href="http://gonefish.cn/?page_id=473">http://gonefish.cn/?page_id=473</a></strong></p>
+<p><strong><br /></strong></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+]]></content:encoded>
+			</item>
+	</channel>
+</rss>
