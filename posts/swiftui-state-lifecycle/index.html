@@ -14,7 +14,7 @@
         // Expose value so theme.ts can skip re-detection.
         window.__theme = { value: theme };
       })();
-    </script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><link rel="stylesheet" href="/_astro/Footer.DzgubL2O.css">
+    </script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/astro-assets/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><link rel="stylesheet" href="/astro-assets/Footer.DzgubL2O.css">
 <style>@keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media(prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}[data-astro-transition-scope]{animation:none!important}}
 </style><style>[data-astro-transition-scope="astro-36ssibgs-1"] { view-transition-name: swiftui; }@layer astro { ::view-transition-old(swiftui) { 
 	animation-duration: 180ms;
@@ -199,7 +199,7 @@ Legacy
 <p>简单的说，每个视图都有identity，这个被称为Structural identity，根据视图的类型与所在的位置生成identity。除此之外，还可以自行设置Explicit identity，即通过<code>id(_:)</code> modifier主动设置的。</p>
 <p>视图的identity也会对动画产生影响，但不是本文的重点，具体情况可以查看上面的Demystify SwiftUI。</p>
 <h3 id="视图的value不等于视图的identity">视图的value不等于视图的identity</h3>
-<p><img alt="view-value-not-equal-view-identify.webp" loading="lazy" decoding="async" width="1273" height="718" src="/_astro/view-value-not-equal-view-identify.BmeABHOY_ZMl1gL.webp" srcset=""></p>
+<p><img alt="view-value-not-equal-view-identify.webp" loading="lazy" decoding="async" width="1273" height="718" src="/astro-assets/view-value-not-equal-view-identify.BmeABHOY_Z15OB1a.webp" srcset=""></p>
 <p>这一点对理解identity非常重要，即视图的value并不是视图的identity。视图会根据情况不断重复创建，而视图的identity并不会发生变化。为了展示这种情况，我们添加一个名为count的State，然后在CountText中显示。</p>
 <pre class="astro-code astro-code-themes min-light night-owl" style="--shiki-light:#24292eff;--shiki-dark:#d6deeb;--shiki-light-bg:#ffffff;--shiki-dark-bg:#011627; overflow-x: auto;--file-name-offset: -0.75rem;" tabindex="0" data-language="swift"><code><span class="line"><span style="--shiki-light:#D32F2F;--shiki-dark:#C792EA">struct</span><span style="--shiki-light:#6F42C1;--shiki-dark:#D6DEEB"> PlayButton</span><span style="--shiki-light:#212121;--shiki-dark:#D6DEEB">:</span><span style="--shiki-light:#6F42C1;--shiki-dark:#C5E478"> View </span><span style="--shiki-light:#24292EFF;--shiki-dark:#D6DEEB">{</span></span>
 <span class="line"></span>
@@ -265,7 +265,7 @@ Legacy
 <span class="line"><span>PlayButton: @self changed.</span></span>
 <span class="line"><span>CountText: @self changed.</span></span></code></pre>
 <h3 id="state的生命周期等于视图的生命周期">State的生命周期等于视图的生命周期</h3>
-<p><img alt="state-life-equal-view-lifetime.webp" loading="lazy" decoding="async" width="1271" height="708" src="/_astro/state-life-equal-view-lifetime.Bzoye2MG_r8vYR.webp" srcset=""></p>
+<p><img alt="state-life-equal-view-lifetime.webp" loading="lazy" decoding="async" width="1271" height="708" src="/astro-assets/state-life-equal-view-lifetime.Bzoye2MG_NUbM.webp" srcset=""></p>
 <p>在前面的示例中，PlayButton会根据showPlayButton的状态来判断是否显示在界面上，这个逻辑就导致了PlayButton的identity发生了变化，进而导致State的生命周期变化。</p>
 <p>为了更好的理解State生命周期的变化，我们来通过它的对象版本StateObject，来观察一下其生命周期的变化。在新的示例中，创建一个自定义对象，并在init和deinit中打印日志。</p>
 <h4 id="stateobject的生命周期">StateObject的生命周期</h4>

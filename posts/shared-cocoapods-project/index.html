@@ -14,7 +14,7 @@
         // Expose value so theme.ts can skip re-detection.
         window.__theme = { value: theme };
       })();
-    </script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><link rel="stylesheet" href="/_astro/Footer.DzgubL2O.css">
+    </script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/astro-assets/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><link rel="stylesheet" href="/astro-assets/Footer.DzgubL2O.css">
 <style>@keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media(prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}[data-astro-transition-scope]{animation:none!important}}
 </style><style>[data-astro-transition-scope="astro-36ssibgs-1"] { view-transition-name: ios; }@layer astro { ::view-transition-old(ios) { 
 	animation-duration: 180ms;
@@ -150,28 +150,28 @@ Legacy
 <span class="line"><span style="--shiki-light:#24292EFF;--shiki-dark:#D6DEEB">	  pod </span><span style="--shiki-light:#22863A;--shiki-dark:#D9F5DD">'</span><span style="--shiki-light:#22863A;--shiki-dark:#ECC48D">AFNetworking</span><span style="--shiki-light:#22863A;--shiki-dark:#D9F5DD">'</span></span>
 <span class="line"><span style="--shiki-light:#D32F2F;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">	end</span></span></code></pre>
 <p>执行pod install后，会生成SharePodsDemoPhone.xcworkspace，打开SharePodsDemoPhone.xcworkspace后，如下图：</p>
-<p><img alt="pic1.png" loading="lazy" decoding="async" width="1416" height="740" src="/_astro/pic1.BFUZ13V1_gxAvO.webp" srcset=""></p>
+<p><img alt="pic1.png" loading="lazy" decoding="async" width="1416" height="740" src="/astro-assets/pic1.BFUZ13V1_1xEay3.webp" srcset=""></p>
 <h3 id="创建sharepodsdemopad工程">创建SharePodsDemoPad工程</h3>
 <p>用同样的方式在SharePodsDeme目录下创建SharePodsDemoPad工程，此时的目录结构见下图</p>
-<p><img alt="pic2.png" loading="lazy" decoding="async" width="940" height="724" src="/_astro/pic2.dAcdaUDr_7XGyl.webp" srcset=""></p>
+<p><img alt="pic2.png" loading="lazy" decoding="async" width="940" height="724" src="/astro-assets/pic2.dAcdaUDr_Z2pDRaB.webp" srcset=""></p>
 <h3 id="拖入sharepodsdemopad工程到sharepodsdemo工作区">拖入SharePodsDemoPad工程到SharePodsDemo工作区</h3>
 <p>将SharePodsDemoPhone.xcworkspace重命名为SharePodsDemo.xcworkspace后打开。将SharePodsDemoPad.xcodeproj拖入SharePodsDemo.xcworkspace中，注意：需要拖放到最顶层。</p>
-<p><img alt="pic3.png" loading="lazy" decoding="async" width="1452" height="1022" src="/_astro/pic3.D9KHIzak_1HWUTw.webp" srcset=""></p>
+<p><img alt="pic3.png" loading="lazy" decoding="async" width="1452" height="1022" src="/astro-assets/pic3.D9KHIzak_2qDwds.webp" srcset=""></p>
 <p>现在就可以在SharePodsDemo工作区中同时管理SharePodsDemoPhone和SharePodsDemoPad这两个项目了，不过此时SharePodsDemoPad项目中还不能引入Pods中的文件的。</p>
-<p><img alt="pic4.png" loading="lazy" decoding="async" width="1372" height="1172" src="/_astro/pic4.nPDNTh--_TwOnD.webp" srcset=""></p>
+<p><img alt="pic4.png" loading="lazy" decoding="async" width="1372" height="1172" src="/astro-assets/pic4.nPDNTh--_1Cpvdq.webp" srcset=""></p>
 <h3 id="复制xcconfig">复制xcconfig</h3>
 <p>在SharePodsDemoPad项目中创建Pods的Group，然后在Pods/Target Support Files/Pods-SharePodsDemoPhone/目录下找到Pods-SharePodsDemoPhone.debug.xcconfig和Pods-SharePodsDemoPhone.release.xcconfig这两个文件，并插入到新建的Pods Group中</p>
-<p><img alt="pic5.png" loading="lazy" decoding="async" width="2004" height="1128" src="/_astro/pic5.G5eaAFNR_Z1OSO0U.webp" srcset=""></p>
+<p><img alt="pic5.png" loading="lazy" decoding="async" width="2004" height="1128" src="/astro-assets/pic5.G5eaAFNR_ZUDzn7.webp" srcset=""></p>
 <p>注意：不要勾选Copy items if needed</p>
 <h3 id="设置configureations">设置Configureations</h3>
 <p>修改SharePodsDemoPad的项目Configureations设置，添加对应的配置文件，如下图</p>
-<p><img alt="pic6.png" loading="lazy" decoding="async" width="2560" height="1600" src="/_astro/pic6.BEcjPv0X_29Ug7f.webp" srcset=""></p>
+<p><img alt="pic6.png" loading="lazy" decoding="async" width="2560" height="1600" src="/astro-assets/pic6.BEcjPv0X_2uHt1j.webp" srcset=""></p>
 <h3 id="添加build-phases">添加Build Phases</h3>
 <p>在Link Binary With Libraries中添加libPods-SharePodsDemoPhone.a</p>
-<p><img alt="pic7.png" loading="lazy" decoding="async" width="1774" height="1156" src="/_astro/pic7.HGTYSgtq_Z1ieOyC.webp" srcset=""></p>
+<p><img alt="pic7.png" loading="lazy" decoding="async" width="1774" height="1156" src="/astro-assets/pic7.HGTYSgtq_ZDg8TK.webp" srcset=""></p>
 <p>这个时候再试试编译SharePodsDemoPad，应该可以编译成功了。</p>
 <p>为了让CocoaPods能够正常工作，还有几个Build Phases需要添加到SharePodsDemoPad中。这些Build Phases的名字都是以[CP]开头，具体的内容直接从SharePodsDemoPhone复制过来即可。</p>
-<p><img alt="pic8.png" loading="lazy" decoding="async" width="1674" height="1020" src="/_astro/pic8.Ch_YA7n2_1uoXdD.webp" srcset=""></p>
+<p><img alt="pic8.png" loading="lazy" decoding="async" width="1674" height="1020" src="/astro-assets/pic8.Ch_YA7n2_2nDPEe.webp" srcset=""></p>
 <p>这样所有的设置就完成了，以后可以方便的共享Pods中的内容了。上面的这个流程其实就是CocoaPods命令中所执行的部分内容。希望这篇文章能够让你对CocoaPods有进一步了了解。</p>
 <p>最终的项目文件：<a href="./shared-cocoapods-project/SharePodsDeme.zip">SharePodsDeme.zip</a></p>
 <h2 id="最后">最后</h2>
